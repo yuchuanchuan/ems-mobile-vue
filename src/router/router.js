@@ -10,6 +10,7 @@ import Login from '../components/Index/Login.vue'
 
 Vue.use(Router)
 export default new Router({
+  base: '/mobile/',
   routes: [
     {path: '/', component: Login},
     {path: '/Sub', component: Sub},

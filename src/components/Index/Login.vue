@@ -20,7 +20,7 @@
     <a @click.prevent="login">登录</a>
 </div>
 <div class="vx">微信授权登录</div>
-<a href="#" class="vx-img"><img src="../../img/weixin.png"></a>
+<a href="#" class="vx-img" @click="weChatLogin"><img src="../../img/weixin.png"></a>
 </div>
 </template>
 <script>
@@ -69,6 +69,25 @@ export default {
         // }
       }).catch((err)=>{
         console.log(err)
+      })
+    },
+    weChatLogin(){
+      this.$http({
+        url: this.$http.adornUrl('/wechat/authorize'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'returnUrl': 'http://ems.jujinkeji.net/mobile'
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          // success
+        } else {
+          console.log(data.msg)
+          // this.$message.error(data.msg)
+          // error
+        }
+      }).catch(()=>{
+        console.log("网络异常，请稍后重试...")
       })
     }
   }
