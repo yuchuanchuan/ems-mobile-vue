@@ -72,25 +72,31 @@ export default {
       })
     },
     weChatLogin(){
-      this.$http({
-        url: this.$http.adornUrl('/wechat/authorize'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'returnUrl': 'http://ems.jujinkeji.net/mobile'
-        })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          // success
-        } else {
-          console.log(data.msg)
-          // this.$message.error(data.msg)
-          // error
-        }
-      }).catch(()=>{
-        console.log("网络异常，请稍后重试...")
-      })
+      let index = 'http://ems.jujinkeji.net/mobile/Index'
+      location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+      // this.$http({
+      //   url: this.$http.adornUrl('/wechat/authorize'),
+      //   method: 'get',
+      //   params: this.$http.adornParams({
+      //     'returnUrl': 'http://ems.jujinkeji.net'
+      //   })
+      // }).then(({ data }) => {
+      //   if (data && data.code === 0) {
+      //     // success
+      //   } else {
+      //     console.log(data.msg)
+      //     // this.$message.error(data.msg)
+      //     // error
+      //   }
+      // }).catch(()=>{
+      //   console.log("网络异常，请稍后重试...")
+      // })
     }
-  }
+  },
+  // created(){
+  //   console.log("------------")
+  //   console.log(this.$route.params)
+  // }
 }
 </script>
 <style scoped>

@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/mobile-ems':{
-        target: 'http://localhost:9010/mobile-ems',
+        target: 'http://ems.jujinkeji.net/mobile-ems',
         changeOrigin:true,
         pathRewrite: {
           '^/mobile-ems':''
