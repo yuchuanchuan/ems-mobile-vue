@@ -24,7 +24,10 @@
                     <div class="item">
                         <div class="info-left"> </div>
                         <div class="info-right"><input style="width:20vw" type="text"></div>
-                        <button class="btn">获取验证码</button>
+                        <button class="btn">
+                            <span v-show="show" @click="getCode" class="count1">点击获取</span>
+                            <span v-show="!show" class="count2">{{count}} s</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -187,7 +190,9 @@ import 'jquery'
 export default {
   data () {
     return {
-      
+        show: true,
+        count: '',
+        timer: null
     }
   },
   mounted(){
@@ -196,6 +201,22 @@ export default {
     this.shang();
   },
   methods:{
+    getCode(){
+     const TIME_COUNT = 60;
+     if (!this.timer) {
+       this.count = TIME_COUNT;
+       this.show = false;
+       this.timer = setInterval(() => {
+       if (this.count > 0 && this.count <= TIME_COUNT) {
+         this.count--;
+        } else {
+         this.show = true;
+         clearInterval(this.timer);
+         this.timer = null;
+        }
+       }, 1000)
+      }
+   },
     jump(e){
       this.$router.push("/Index")
     },
@@ -614,4 +635,32 @@ td{
     left:-10vw;
     width:10vw;}
 .y-img>img{width:100%;}
+.count2{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    outline:none;
+    height:2rem;
+    background:#cdcdcd;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    align-items: center;
+    text-decoration: none;}
+.count1{
+    display:flex;
+    outline:none;
+    text-align: center;
+    align-items: center;
+    height:2rem;
+    background:#1bb9ff;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    align-items: center;
+    color:#fff;
+    text-decoration: none;}
 </style>
