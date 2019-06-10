@@ -13,11 +13,12 @@ export default new Router({
   base: '/mobile/',
   mode: 'history',
   routes: [
-    {path: '/', component: Login},
-    {path: '/Sub', component: Sub},
-    {path: "/Info", component: Info},
-    {path: '/List', component: List},
-    {path: '/Ex', component: Ex},
-    {path: '/Index', component: Index}
+    { path: '/', redirect: '/login' },
+    {path: '/login', name:'login', component: Login},
+    {path: '/Sub', name:'Sub', component: Sub},
+    {path: "/Info", name:'Info', component: Info},
+    {path: '/List', name:'List', component: List},
+    {path: '/Ex', name:'Ex', component: Ex},
+    {path: '/Index', name:'Index', component: Index}
   ]
 })

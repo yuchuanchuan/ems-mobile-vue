@@ -52,7 +52,6 @@ export default {
       })
     },
     login(){
-      console.log("走999")
       this.$http({
         url: this.$http.adornUrl('/login'),
         method: 'post',
@@ -60,13 +59,13 @@ export default {
       }).then(({ data }) => {
         console.log("登录成功")
         console.log(data)
-        // if (data && data.code === 0) {
-        //   this.$cookie.set('token', data.token)
-        //   this.$router.replace({ name: 'home' })
-        // } else {
-        //   this.getCaptcha()
-        //   this.$message.error(data.msg)
-        // }
+        if (data && data.code === 0) {
+          this.$cookie.set('token', data.data)
+          // this.$route
+          this.$router.push({ path:'/Index'})
+        } else {
+          console.log(data.msg)
+        }
       }).catch((err)=>{
         console.log(err)
       })

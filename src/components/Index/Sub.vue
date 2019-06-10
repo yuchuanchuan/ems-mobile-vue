@@ -11,19 +11,19 @@
                 <div class="info">
                     <div class="item">
                         <div class="info-left">姓名：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的姓名"></div>
+                        <div class="info-right"><input type="text" placeholder="输入您的姓名" v-model="dataForm.name"></div>
                     </div>
                     <div class="item">
                         <div class="info-left">身份证号：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的身份证号"></div>
+                        <div class="info-right"><input type="text" placeholder="输入您的身份证号" v-model="dataForm.idCard"></div>
                     </div>
                     <div class="item">
                         <div class="info-left">手机号：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的手机号"></div>
+                        <div class="info-right"><input type="text" placeholder="输入您的手机号" v-model="dataForm.phone"></div>
                     </div>
                     <div class="item">
                         <div class="info-left"> </div>
-                        <div class="info-right"><input style="width:20vw" type="text"></div>
+                        <div class="info-right"><input style="width:20vw" type="text" v-model="dataForm.mobileCode"></div>
                         <button class="btn">
                             <span v-show="show" @click="getCode" class="count1">点击获取</span>
                             <span v-show="!show" class="count2">{{count}} s</span>
@@ -35,14 +35,14 @@
                 <div>
                     <div class="flexz">产权人身份证正面</div>
                     <div>
-                        <input type="file" ref="closeUp" accept="image" class="myfile file1"/>
+                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file1"/>
                     </div>
                     <div class="myimg img1"></div>
                 </div>
                 <div>
                     <div class="flexz">产权人身份证反面</div>
                     <div>
-                        <input type="file" ref="closeUp" accept="image" class="myfile file2"/>
+                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file2"/>
                     </div>
                     <div class="myimg img2"></div>
                 </div>
@@ -51,19 +51,15 @@
                 <div>
                     <div class="flexz">房管局受理凭证</div>
                     <div>
-                        <input type="file" ref="closeUp" accept="image" class="myfile file3"/>
+                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file3"/>
                     </div>
                     <div class="myimg img3"></div>
                 </div>
             </div>
             <div class="emil">
                 <div>邮寄类型 &nbsp;</div>
-                <select>
-                    <option>房本</option>
-                    <option>房本</option>
-                    <option>房本</option>
-                    <option>房本</option>
-                    <option>房本</option>
+                <select v-model="dataForm.postType">
+                    <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
                 </select>
             </div>
             <div class="ji">
@@ -75,31 +71,27 @@
             </div>
             <form class="hide-box" data-zt="0">
                 <div class="hide-title">寄达地</div>
-                <label class="hide-item">
+                <label class="hide-item" v-for="(item,index) in insuredList" :key="index">
                     <div class="hide-left">
-                        <div class="left1">天津/外阜（新疆、西藏除外）</div> 
-                        <div class="left2">￥<span class="left1">20</span></div>
+                        <div class="left1">{{item.name}}</div>
+                        <div class="left2">￥<span class="left1">{{item.price}}</span></div>
                     </div>
-                    <input type="radio" class="myinput1" name="dizhi" value="a"/>
-                    <div class="z">500g以内</div>
+                    <input type="radio" class="myinput1" name="dizhi" :value="item.id"/>
+                    <!--<div class="z">500g以内</div>-->
                 </label>
-                <label class="hide-item">
-                        <div class="hide-left">
-                            <div class="left1">新疆、西藏</div> 
-                            <div class="left2">￥<span class="left1">24</span></div>
-                        </div>
-                        <input type="radio" class="myinput1" name="dizhi" value="a"/>
-                        <div class="z">首重1kg</div>
-                    </label>
+                <!--<label class="hide-item">-->
+                        <!--<div class="hide-left">-->
+                            <!--<div class="left1">新疆、西藏</div>-->
+                            <!--<div class="left2">￥<span class="left1">24</span></div>-->
+                        <!--</div>-->
+                        <!--<input type="radio" class="myinput1" name="dizhi" value="a"/>-->
+                        <!--<div class="z">首重1kg</div>-->
+                    <!--</label>-->
             </form>
             <div class="emil">
                 <div>受理地址： &nbsp;</div>
-                <select>
-                    <option>西青区发证场所</option>
-                    <option>房本</option>
-                    <option>房本</option>
-                    <option>房本</option>
-                    <option>房本</option>
+                <select v-model="dataForm.handleAreaId">
+                    <option v-for="(item,index) in handleAreas" :key="index" :value="item.id">{{item.name}}</option>
                 </select>
             </div>
             <div class="content-item" style="padding:0;">
@@ -108,30 +100,27 @@
                 </div>
                 <div class="img"><img src="../../img/uname.png"> </div>
                 <div class="emil-box">
-                    <div class="emil-item"> 
-                        <select>
-                            <option>河北省</option>
-                            <option>广东省</option>
+                    <div class="emil-item">
+                        <select v-model="dataForm.postProvinceId" @change="getCityNames">
+                            <option v-for="(item,index) in provinceNames" :key="index" :value="item.id">{{item.name}}</option>
                         </select>
-                        <select>
-                            <option>石家庄市</option>
-                            <option>保定市</option>
+                        <select v-model="dataForm.postCityId" @change="getCountyNames">
+                            <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
                         </select>
-                        <select>
-                            <option>桥西区</option>
-                            <option>桥东区</option>
+                        <select v-model="dataForm.postCountyId">
+                            <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
                         </select>
                     </div>
                     <div class="xx">
-                        详细地址：<input type="text">
+                        详细地址：<input type="text" v-model="dataForm.postAddress">
                     </div>
                 </div>
             </div>
             <div class="btn2">
                 <button class="sub"  @click="jump">确认提交</button>
-                <button class="del">取消</button>
+                <button class="del" @click="goBack">取消</button>
             </div>
-                
+
         </div>
     </div>
 <div class="infos">
@@ -182,14 +171,49 @@
             <li>3.返单业务资费：实物返单3元/票，个性化返单每增加一份，资费增加1元。</li>
         </ul>
     </div>
-</div> 
+</div>
   </div>
 </template>
 <script>
 import 'jquery'
+
+var ownerPositive = '';  // 正面身份证
+var ownerNegative = '';  // 反面身份证
+var housingAuthority = ''; // 房产证
 export default {
   data () {
     return {
+      parentId: 1,
+      provinceNames: [],
+      cityNames: [],
+      countyNames: [],
+      insuredList: [],
+      handleAreas: [],
+      postTypes:[{
+        id:1, value: '房本'
+      },{
+        id:2, value: '正式'
+      },{
+        id:3, value: '其他'
+      }],
+      dataForm:{
+        // id: '',
+        name: '',
+        idCard: '',
+        phone: '',
+        mobileCode: '',
+        ownerPositive: '',
+        ownerNegative: '',
+        housingAuthority: '',
+        postType: '',
+        postRisk: 1,
+        postRiskId: '',
+        postProvinceId: '',
+        postCityId: '',
+        postCountyId: '',
+        postAddress: '',
+        handleAreaId: ''
+      },
         show: true,
         count: '',
         timer: null
@@ -202,22 +226,64 @@ export default {
   },
   methods:{
     getCode(){
-     const TIME_COUNT = 60;
-     if (!this.timer) {
-       this.count = TIME_COUNT;
-       this.show = false;
-       this.timer = setInterval(() => {
-       if (this.count > 0 && this.count <= TIME_COUNT) {
-         this.count--;
-        } else {
-         this.show = true;
-         clearInterval(this.timer);
-         this.timer = null;
-        }
-       }, 1000)
-      }
+      this.$http({
+        url: this.$http.adornUrl('/sendMsg'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'phone': this.dataForm.phone
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+              } else {
+                this.show = true;
+                clearInterval(this.timer);
+                this.timer = null;
+              }
+            }, 1000)
+          }
+        } else {
+          console.log(data.msg)
+          // this.$message.error(data.msg)
+          // error
+        }
+      })
    },
     jump(e){
+      this.dataForm.ownerPositive = ownerPositive
+      this.dataForm.ownerNegative = ownerNegative
+      this.dataForm.housingAuthority = housingAuthority
+
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/create'),
+        method: 'post',
+        data: this.$http.adornData(this.dataForm)
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          // this.$message({
+          //   message: '操作成功',
+          //   type: 'success',
+          //   duration: 1500,
+          //   onClose: () => {
+          //     this.visible = false
+          //     this.$emit('refreshDataList')
+          //   }
+          // })
+          console.log("操作成功")
+          this.$router.push("/Index")
+        } else {
+          // this.$message.error(data.msg)
+          console.log(data.msg)
+        }
+      })
+    },
+    goBack(){
       this.$router.push("/Index")
     },
       kai(){
@@ -269,23 +335,189 @@ export default {
         $(".img1").click(function(){
           $('.file1').click()
         })
-        $('.file1').change(function(){
-            $('.img1').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
+        $('.file1').change(function() {
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file",$(this)[0].files[0]);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type:'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success:function(res){
+              console.log(res);
+              if(res.code === 0){
+                ownerPositive = res.data
+              }else{
+                console.log(res.msg)
+              }
+            }
+          })
+          $('.img1').css('backgroundImage', "url(" + URL.createObjectURL($(this)[0].files[0]) + ')')
         })
         $(".img2").click(function(){
             $('.file2').click()
         })
         $('.file2').change(function(){
-            $('.img2').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file",$(this)[0].files[0]);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type:'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success:function(res){
+              console.log(res);
+              if(res.code === 0){
+                ownerNegative = res.data
+              }else{
+                console.log(res.msg)
+              }
+            }
+          })
+          $('.img2').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
         })
         $(".img3").click(function(){
             $('.file3').click()
         })
         $('.file3').change(function(){
-            $('.img3').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
+          let formData = new FormData();
+          //接口接收参数 键值形式 添加到formData中
+          formData.append("file",$(this)[0].files[0]);
+          $.ajax({
+            url: process.env.BASE_API + '/sys/file/uploadImg',//url地址
+            type:'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success:function(res){
+              console.log(res);
+              if(res.code === 0){
+                housingAuthority = res.data
+              }else{
+                console.log(res.msg)
+              }
+            }
+          })
+          $('.img3').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
         })
+    },
+
+    getProvinceNames(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/area/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'parentId': this.parentId
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.provinceNames = []
+          this.cityNames = []
+          this.countyNames = []
+          data.data.forEach((item) => {
+            this.provinceNames.push({
+              id: item.id,
+              name: item.name
+            })
+          })
+        } else {
+            console.log(data.msg)
+        }
+      })
+    },
+    getCityNames(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/area/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'parentId': this.dataForm.postProvinceId
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.cityNames = []
+          this.countyNames = []
+          data.data.forEach((item) => {
+            this.cityNames.push({
+              id: item.id,
+              name: item.name
+            })
+          })
+        } else {
+          console.log(data.msg)
+        }
+      })
+    },
+    getCountyNames(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/area/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'parentId': this.dataForm.postCityId
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.countyNames = []
+          data.data.forEach((item) => {
+            this.countyNames.push({
+              id: item.id,
+              name: item.name
+            })
+          })
+        } else {
+          console.log(data.msg)
+        }
+      })
+    },
+    getInsuredList(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/insured/list'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.insuredList = []
+          data.data.forEach((item) => {
+            this.insuredList.push({
+              id: item.insuredId,
+              name: item.insuredComment,
+              price: item.insuredAmount
+            })
+          })
+        } else {
+          console.log(data.msg)
+        }
+      })
+    },
+    getHandleArea(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/handlerArea/list'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.handleAreas = []
+          data.data.forEach((item) => {
+            this.handleAreas.push({
+              id: item.id,
+              name: item.handleAddress
+            })
+          })
+        } else {
+          console.log(data.msg)
+        }
+      })
     }
-}
+},
+
+  created(){
+    this.getProvinceNames()
+    this.getInsuredList()
+    this.getHandleArea()
+  }
 }
 </script>
 <style>
@@ -296,7 +528,7 @@ export default {
 html,body{
     width:100%;
     background:#f2f2f2;}
-.box{ 
+.box{
     position: relative;
     width:100%;}
 .beijing{width:100%;}
@@ -317,7 +549,7 @@ html,body{
 .content-item{
     border-radius: 10px;
     padding:1vw 0 2vw !important;
-    background:#fff;} 
+    background:#fff;}
 .shoujian{
     color:#2e2e2e;
     margin:2vw 0 0 5vw;
@@ -340,7 +572,7 @@ html,body{
     font-size:4vw;
     width:30vw;}
 .info-right{
-    line-height: 6vw; 
+    line-height: 6vw;
     height:6vw;}
 .info-right>input{
     background:transparent;
@@ -416,7 +648,7 @@ outline: none;
 font-size:4vw;
 padding-left:4vw;
 width:55vw;}
-.ji{ 
+.ji{
     margin:2vw 0vw 2vw 0;
     background:#fff;
 
@@ -529,7 +761,7 @@ input[type=radio]:checked:after {
     content: "L";
     color:#fff;
     transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
-    -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0); 
+    -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
     border-color:2px solid #09bb07;
     background-color: #09bb07;}
 .hide-box{
@@ -557,7 +789,7 @@ input[type=radio]:checked:after {
     justify-content: space-between;
     display:flex;}
 .myinput1{width:5vw;}
-.z{ 
+.z{
     font-size:4vw;
     margin-top:2vw;
     font-weight:400;
