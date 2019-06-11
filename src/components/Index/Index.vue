@@ -1,4 +1,5 @@
 <template>
+
   <div class="content">
     <div class="logo"><img src="../../img/logo.png"></div> 
     <div class="tongzhi">

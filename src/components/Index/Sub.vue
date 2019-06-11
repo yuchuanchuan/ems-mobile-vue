@@ -90,12 +90,10 @@
             </form>
             <div class="emil">
                 <div>受理地址： &nbsp;</div>
-                <select v-model="dataForm.handleAreaId">
-                    <option v-for="(item,index) in handleAreas" :key="index" :value="item.id">{{item.name}}</option>
-                </select>
+                <span>受理地址1111</span>
             </div>
             <div class="content-item" style="padding:0;">
-                <div class="shoujian youji">邮寄地址
+                <div class="shoujian youji">收件地址
                     <div class="y-img"><img src="../../img/yj-logo.png"> </div>
                 </div>
                 <div class="img"><img src="../../img/uname.png"> </div>
@@ -249,13 +247,21 @@ export default {
             }, 1000)
           }
         } else {
-          console.log(data.msg)
+          alert("请输入正确的手机号")
+          // console.log(data.msg)
           // this.$message.error(data.msg)
           // error
         }
       })
    },
     jump(e){
+      var form_list = this.dataForm 
+      for(var i =0;i<form_list.length;i++){
+        if(form_list[i] == ''){
+          alert("请完善信息")
+          return
+        }
+      }
       this.dataForm.ownerPositive = ownerPositive
       this.dataForm.ownerNegative = ownerNegative
       this.dataForm.housingAuthority = housingAuthority
@@ -895,4 +901,12 @@ td{
     align-items: center;
     color:#fff;
     text-decoration: none;}
+.emil span{
+    color: #333;
+    margin-right: 4vw;
+    height: 10vw;
+    line-height: 10vw;
+    padding-left: 6vw;
+    font-size: 4vw;
+}
 </style>

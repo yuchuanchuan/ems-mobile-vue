@@ -13,8 +13,9 @@
         <input placeholder="短信验证码" class="input-item" v-model="loginForm.mobileCode">
     </div>
     <div class="huoqu">
-        <a @click.prevent="sendMsg">点击获取</a>
-    </div>
+        <span v-show="show" @click="getCode" class="count1">点击获取</span>
+        <span v-show="!show" class="count2">{{count}} s</span>
+    </div> 
 </div>
 <div class="login">
     <a @click.prevent="login">登录</a>
@@ -30,10 +31,29 @@ export default {
       loginForm:{
         phone: '',
         mobileCode: ''
-      }
+      },
+      show: true,
+      count: '',
+      timer: null,
     }
   },
   methods:{
+  getCode(){
+     const TIME_COUNT = 60;
+     if (!this.timer) {
+       this.count = TIME_COUNT;
+       this.show = false;
+       this.timer = setInterval(() => {
+       if (this.count > 0 && this.count <= TIME_COUNT) {
+         this.count--;
+        } else {
+         this.show = true;
+         clearInterval(this.timer);
+         this.timer = null;
+        }
+       }, 1000)
+      }
+   },
     sendMsg(){
       this.$http({
         url: this.$http.adornUrl('/sendMsg'),
@@ -67,7 +87,7 @@ export default {
           console.log(data.msg)
         }
       }).catch((err)=>{
-        console.log(err)
+        alert("请输入正确的手机号或验证码")
       })
     },
     weChatLogin(){
@@ -119,8 +139,9 @@ body{background:#fff;}
     width:80vw;}
 .input-item{
     border-radius: 10px;
+    padding-left: 5vw;
     height:8vw;
-    font-size:4.5vw;
+    font-size:3.5vw;
     line-height: 8vw;
     outline: none;
     border:none;}
@@ -174,4 +195,43 @@ body{background:#fff;}
     margin:0 auto;
     width:12%;}
 .vx-img>img{width:100%;}
+.huoqu{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 20px;
+    height:2rem;
+    background:#cdcdcd;
+    width:30%;
+    position: absolute;
+    left:70%;}
+.count2{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 20px;
+    height:2rem;
+    background:#cdcdcd;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    align-items: center;
+    text-decoration: none;}
+.count1{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 20px;
+    height:2rem;
+    background:#1bb9ff;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    align-items: center;
+    color:#fff;
+    text-decoration: none;}
+
 </style>
