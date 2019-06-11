@@ -255,7 +255,7 @@ export default {
       })
    },
     jump(e){
-      var form_list = this.dataForm 
+      var form_list = this.dataForm
       for(var i =0;i<form_list.length;i++){
         if(form_list[i] == ''){
           alert("请完善信息")
@@ -290,8 +290,57 @@ export default {
       })
     },
     goBack(){
-      this.$router.push("/Index")
+      this.$http({
+        url: this.$http.adornUrl('/pay/create'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'orderId': '1560171846460907',
+          'returnUrl': 'https:/www.baidu.com'
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          console.log("999999999999")
+          console.log(data)
+
+          if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+            if( document.addEventListener ){
+              document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+            }else if (document.attachEvent){
+              document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+              document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+            }
+          }else{
+            this.onBridgeReady(data);
+          }
+
+
+        } else {
+          console.log(data.msg)
+        }
+      })
+
+      // this.$router.push("/Index")
     },
+    onBridgeReady:function(data){
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
+          "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
+          "nonceStr": data.data.payResponse.nonceStr, //随机串
+          "package": data.data.payResponse.package,
+          "signType": data.data.payResponse.signType,         //微信签名方式：
+          "paySign": data.data.payResponse.paySign //微信签名
+        },
+        function(res){
+           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              console.log("支付成功")
+           }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          location.href = "${returnUrl}";
+        }
+      );
+    },
+
+
       kai(){
       var hei = $(window).height()
       $('.kai').click(function(){
