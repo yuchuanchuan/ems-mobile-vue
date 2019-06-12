@@ -13,9 +13,9 @@
         <input placeholder="短信验证码" class="input-item" v-model="loginForm.mobileCode">
     </div>
     <div class="huoqu">
-        <span v-show="show" @click="getCode" class="count1">点击获取</span>
+        <span v-show="show" @click="sendMsg" class="count1">点击获取</span>
         <span v-show="!show" class="count2">{{count}} s</span>
-    </div> 
+    </div>
 </div>
 <div class="login">
     <a @click.prevent="login">登录</a>
@@ -38,22 +38,6 @@ export default {
     }
   },
   methods:{
-  getCode(){
-     const TIME_COUNT = 60;
-     if (!this.timer) {
-       this.count = TIME_COUNT;
-       this.show = false;
-       this.timer = setInterval(() => {
-       if (this.count > 0 && this.count <= TIME_COUNT) {
-         this.count--;
-        } else {
-         this.show = true;
-         clearInterval(this.timer);
-         this.timer = null;
-        }
-       }, 1000)
-      }
-   },
     sendMsg(){
       this.$http({
         url: this.$http.adornUrl('/sendMsg'),
@@ -63,7 +47,20 @@ export default {
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
-          // success
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+              } else {
+                this.show = true;
+                clearInterval(this.timer);
+                this.timer = null;
+              }
+            }, 1000)
+          }
         } else {
           console.log(data.msg)
           // this.$message.error(data.msg)

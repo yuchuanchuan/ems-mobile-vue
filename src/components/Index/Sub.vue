@@ -225,7 +225,7 @@ export default {
   methods:{
     getCode(){
       this.$http({
-        url: this.$http.adornUrl('/sendMsg'),
+        url: this.$http.adornUrl('/sendOrderMsg'),
         method: 'get',
         params: this.$http.adornParams({
           'phone': this.dataForm.phone
@@ -265,6 +265,13 @@ export default {
       this.dataForm.ownerPositive = ownerPositive
       this.dataForm.ownerNegative = ownerNegative
       this.dataForm.housingAuthority = housingAuthority
+
+      if(this.dataForm.postRisk === 2){
+        this.dataForm.postRiskId = 0
+      }
+
+      // let index = 'http://ems.jujinkeji.net/mobile/Index'
+      // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
 
       this.$http({
         url: this.$http.adornUrl('/mobile/order/create'),
