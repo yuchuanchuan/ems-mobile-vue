@@ -37,7 +37,7 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-  console.log("====相应请求====")
+  console.log("====响应请求====")
   console.log(response)
   if (response.data && response.data.code === 401) { // 401, token失效
     clearLoginInfo()
