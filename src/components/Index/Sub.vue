@@ -2,369 +2,411 @@
   <div id="app-sub">
     <div class="hidden"></div>
     <div class="box">
-        <div class="beijing"><img src="../../img/beijing.png"></div>
-        <div class="title">提交信息</div>
-        <div class="content">
-            <div class="content-item">
-                <div class="shoujian">收件人</div>
-                <div class="img"><img src="../../img/uname.png"> </div>
-                <div class="info">
-                    <div class="item">
-                        <div class="info-left">姓名：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的姓名" v-model="dataForm.name"></div>
-                    </div>
-                    <div class="item">
-                        <div class="info-left">身份证号：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的身份证号" v-model="dataForm.idCard"></div>
-                    </div>
-                    <div class="item">
-                        <div class="info-left">手机号：</div>
-                        <div class="info-right"><input type="text" placeholder="输入您的手机号" v-model="dataForm.phone"></div>
-                    </div>
-                    <div class="item">
-                        <div class="info-left"> </div>
-                        <div class="info-right"><input style="width:20vw" type="text" v-model="dataForm.mobileCode"></div>
-                        <button class="btn">
-                            <span v-show="show" @click="getCode" class="count1">点击获取</span>
-                            <span v-show="!show" class="count2">{{count}} s</span>
-                        </button>
-                    </div>
-                </div>
+      <div class="beijing"><img src="../../img/beijing.png"></div>
+      <div class="title">提交信息</div>
+      <div class="content">
+        <div class="content-item">
+          <div class="shoujian">收件人</div>
+          <div class="img"><img src="../../img/uname.png"> </div>
+          <div class="info">
+            <div class="item">
+              <div class="info-left">姓名：</div>
+              <div class="info-right"><input type="text" placeholder="输入您的姓名" v-model="dataForm.name"></div>
             </div>
-            <div class="content-items">
-                <div>
-                    <div class="flexz">产权人身份证正面</div>
-                    <div>
-                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file1"/>
-                    </div>
-                    <div class="myimg img1"></div>
-                </div>
-                <div>
-                    <div class="flexz">产权人身份证反面</div>
-                    <div>
-                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file2"/>
-                    </div>
-                    <div class="myimg img2"></div>
-                </div>
+            <div class="item">
+              <div class="info-left">身份证号：</div>
+              <div class="info-right"><input type="text" placeholder="输入您的身份证号" v-model="dataForm.idCard"></div>
             </div>
-            <div class="content-items">
-                <div>
-                    <div class="flexz">房管局受理凭证</div>
-                    <div>
-                        <input type="file" name="file" ref="closeUp" accept="image" class="myfile file3"/>
-                    </div>
-                    <div class="myimg img3"></div>
-                </div>
+            <div class="item">
+              <div class="info-left">手机号：</div>
+              <div class="info-right"><input type="text" placeholder="输入您的手机号" v-model="dataForm.phone"></div>
             </div>
-            <div class="emil">
-                <div>邮寄类型 &nbsp;</div>
-                <select v-model="dataForm.postType">
-                    <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
-                </select>
+            <div class="item">
+              <div class="info-left"> </div>
+              <div class="info-right"><input style="width:20vw" type="text" v-model="dataForm.mobileCode"></div>
+              <button class="btn">
+                <span v-show="show" @click="getCode" class="count1">点击获取</span>
+                <span v-show="!show" class="count2">{{count}} s</span>
+              </button>
             </div>
-            <div class="ji">
-                <div class="btn-t">是否投递保险
-                    <img class="kai" src="../../img/i.png"></div>
-                <div class="btn1">
-                    <div class="round" data="0"></div>
-                </div>
-            </div>
-            <form class="hide-box" data-zt="0">
-                <div class="hide-title">寄达地</div>
-                <label class="hide-item" v-for="(item,index) in insuredList" :key="index">
-                    <div class="hide-left">
-                        <div class="left1">{{item.name}}</div>
-                        <div class="left2">￥<span class="left1">{{item.price}}</span></div>
-                    </div>
-                    <input type="radio" class="myinput1" name="dizhi" :value="item.id"/>
-                    <!--<div class="z">500g以内</div>-->
-                </label>
-                <!--<label class="hide-item">-->
-                        <!--<div class="hide-left">-->
-                            <!--<div class="left1">新疆、西藏</div>-->
-                            <!--<div class="left2">￥<span class="left1">24</span></div>-->
-                        <!--</div>-->
-                        <!--<input type="radio" class="myinput1" name="dizhi" value="a"/>-->
-                        <!--<div class="z">首重1kg</div>-->
-                    <!--</label>-->
-            </form>
-            <div class="emil">
-                <div>受理地址： &nbsp;</div>
-                <span>受理地址1111</span>
-            </div>
-            <div class="content-item" style="padding:0;">
-                <div class="shoujian youji">收件地址
-                    <div class="y-img"><img src="../../img/yj-logo.png"> </div>
-                </div>
-                <div class="img"><img src="../../img/uname.png"> </div>
-                <div class="emil-box">
-                    <div class="emil-item">
-                        <select v-model="dataForm.postProvinceId" @change="getCityNames">
-                            <option v-for="(item,index) in provinceNames" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
-                        <select v-model="dataForm.postCityId" @change="getCountyNames">
-                            <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
-                        <select v-model="dataForm.postCountyId">
-                            <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
-                    </div>
-                    <div class="xx">
-                        详细地址：<input type="text" v-model="dataForm.postAddress">
-                    </div>
-                </div>
-            </div>
-            <div class="btn2">
-                <button class="sub"  @click="jump">确认提交</button>
-                <button class="del" @click="goBack">取消</button>
-            </div>
-
+          </div>
         </div>
+        <div class="content-items">
+          <div>
+            <div class="flexz">产权人身份证正面</div>
+            <div>
+              <input type="file" name="file" ref="closeUp" accept="image" class="myfile file1"/>
+            </div>
+            <div class="myimg img1"></div>
+          </div>
+          <div>
+            <div class="flexz">产权人身份证反面</div>
+            <div>
+              <input type="file" name="file" ref="closeUp" accept="image" class="myfile file2"/>
+            </div>
+            <div class="myimg img2"></div>
+          </div>
+        </div>
+        <div class="content-items">
+          <div>
+            <div class="flexz">房管局受理凭证</div>
+            <div>
+              <input type="file" name="file" ref="closeUp" accept="image" class="myfile file3"/>
+            </div>
+            <div class="myimg img3"></div>
+          </div>
+        </div>
+        <div class="emil">
+          <div>邮寄类型 &nbsp;</div>
+          <select v-model="dataForm.postType">
+            <option v-for="(item,index) in postTypes" :key="index" :value="item.id">{{item.value}}</option>
+          </select>
+        </div>
+        <div class="ji">
+          <div class="btn-t">是否投递保险
+            <img class="kai" src="../../img/i.png"></div>
+          <div class="btn1">
+            <div class="round" data="0"></div>
+          </div>
+        </div>
+        <form class="hide-box" data-zt="0">
+          <div class="hide-title">寄达地</div>
+          <label class="hide-item" v-for="(item,index) in insuredList" :key="index">
+            <div class="hide-left">
+              <div class="left1">{{item.name}}</div>
+              <div class="left2">￥<span class="left1">{{item.price}}</span></div>
+            </div>
+            <input type="radio" class="myinput1" name="dizhi" :value="item.id"/>
+            <!--<div class="z">500g以内</div>-->
+          </label>
+          <!--<label class="hide-item">-->
+          <!--<div class="hide-left">-->
+          <!--<div class="left1">新疆、西藏</div>-->
+          <!--<div class="left2">￥<span class="left1">24</span></div>-->
+          <!--</div>-->
+          <!--<input type="radio" class="myinput1" name="dizhi" value="a"/>-->
+          <!--<div class="z">首重1kg</div>-->
+          <!--</label>-->
+        </form>
+        <div class="emil">
+          <div>受理地址： &nbsp;</div>
+          <span>{{dataForm.riskName}}</span>
+        </div>
+        <div class="content-item" style="padding:0;">
+          <div class="shoujian youji">收件地址
+            <div class="y-img"><img src="../../img/yj-logo.png"> </div>
+          </div>
+          <div class="img"><img src="../../img/uname.png"> </div>
+          <div class="emil-box">
+            <div class="emil-item">
+              <select v-model="dataForm.postProvinceId" @change="getCityNames">
+                <option v-for="(item,index) in provinceNames" :key="index" :value="item.id">{{item.name}}</option>
+              </select>
+              <select v-model="dataForm.postCityId" @change="getCountyNames">
+                <option v-for="(item,index) in cityNames" :key="index" :value="item.id">{{item.name}}</option>
+              </select>
+              <select v-model="dataForm.postCountyId">
+                <option v-for="(item,index) in countyNames" :key="index" :value="item.id">{{item.name}}</option>
+              </select>
+            </div>
+            <div class="xx">
+              详细地址：<input type="text" v-model="dataForm.postAddress">
+            </div>
+          </div>
+        </div>
+        <div class="btn2">
+          <button class="sub"  @click="jump">确认提交</button>
+          <button class="del" @click="goBack">取消</button>
+        </div>
+
+      </div>
     </div>
-<div class="infos">
-    <div class="infos-title">
+    <div class="infos">
+      <div class="infos-title">
         <div>投递保险详情</div>
         <div class="guan">×</div>
-    </div>
-    <div class="table-box">
+      </div>
+      <div class="table-box">
         <div class="table-title">不动产权登记中心EMS邮寄寄费标准</div>
         <table  cellspacing=0 cellpadding=0 border="1">
-            <tr>
-                <td rowspan="2">寄达地</td>
-                <td>咨费标准</td>
-                <td rowspan="2">备注</td>
-            </tr>
-            <tr>
-                <td>500G以内(元)</td>
-            </tr>
-            <tr>
-                <td rowspan="2">天津<br></td>
-                <td rowspan="2">20<br></td>
-                <td rowspan="2"></td>
-            </tr>
-            <tr>
+          <tr>
+            <td rowspan="2">寄达地</td>
+            <td>咨费标准</td>
+            <td rowspan="2">备注</td>
+          </tr>
+          <tr>
+            <td>500G以内(元)</td>
+          </tr>
+          <tr>
+            <td rowspan="2">天津<br></td>
+            <td rowspan="2">20<br></td>
+            <td rowspan="2"></td>
+          </tr>
+          <tr>
 
-            </tr>
-            <tr>
-                <td rowspan="2">外阜<br></td>
-                <td rowspan="2">20<br></td>
-                <td rowspan="2">新疆、西藏除外<br></td>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
-                <td rowspan="2">新疆、西藏<br></td>
-                <td rowspan="2">24(首重1kg)<br></td>
-                <td rowspan="2"></td>
-            </tr>
-            <tr>
-            </tr>
+          </tr>
+          <tr>
+            <td rowspan="2">外阜<br></td>
+            <td rowspan="2">20<br></td>
+            <td rowspan="2">新疆、西藏除外<br></td>
+          </tr>
+          <tr>
+          </tr>
+          <tr>
+            <td rowspan="2">新疆、西藏<br></td>
+            <td rowspan="2">24(首重1kg)<br></td>
+            <td rowspan="2"></td>
+          </tr>
+          <tr>
+          </tr>
         </table>
-    </div>
-    <div class="beizhu">
+      </div>
+      <div class="beizhu">
         <div class="b-title">备注：</div>
         <ul class="s-title">
-            <li>1.个性化服务的业务，根据其特殊的服务标准、操作流程执行个性化的资费标准</li>
-            <li>2.计泡规定：对长、宽、高三边中任一单边达到60cm以上（含60cm）的邮件，计算体积重量（长（cm））X宽（cm）X高（cm）/6000（cm3/kg）），并取体积重量和实际重量中的较大者，计算资费。</li>
-            <li>3.返单业务资费：实物返单3元/票，个性化返单每增加一份，资费增加1元。</li>
+          <li>1.个性化服务的业务，根据其特殊的服务标准、操作流程执行个性化的资费标准</li>
+          <li>2.计泡规定：对长、宽、高三边中任一单边达到60cm以上（含60cm）的邮件，计算体积重量（长（cm））X宽（cm）X高（cm）/6000（cm3/kg）），并取体积重量和实际重量中的较大者，计算资费。</li>
+          <li>3.返单业务资费：实物返单3元/票，个性化返单每增加一份，资费增加1元。</li>
         </ul>
+      </div>
     </div>
-</div>
   </div>
 </template>
 <script>
-import 'jquery'
+  import 'jquery'
+  import BMap from 'BMap'
 
-var ownerPositive = '';  // 正面身份证
-var ownerNegative = '';  // 反面身份证
-var housingAuthority = ''; // 房产证
-export default {
-  data () {
-    return {
-      parentId: 1,
-      provinceNames: [],
-      cityNames: [],
-      countyNames: [],
-      insuredList: [],
-      handleAreas: [],
-      postTypes:[{
-        id:1, value: '房本'
-      },{
-        id:2, value: '正式'
-      },{
-        id:3, value: '其他'
-      }],
-      dataForm:{
-        // id: '',
-        name: '',
-        idCard: '',
-        phone: '',
-        mobileCode: '',
-        ownerPositive: '',
-        ownerNegative: '',
-        housingAuthority: '',
-        postType: '',
-        postRisk: 1,
-        postRiskId: '',
-        postProvinceId: '',
-        postCityId: '',
-        postCountyId: '',
-        postAddress: '',
-        handleAreaId: ''
-      },
+  var ownerPositive = '';  // 正面身份证
+  var ownerNegative = '';  // 反面身份证
+  var housingAuthority = ''; // 房产证
+  export default {
+    data () {
+      return {
+        parentId: 1,
+        provinceNames: [],
+        cityNames: [],
+        countyNames: [],
+        insuredList: [],
+        handleAreas: [],
+        postTypes:[{
+          id:1, value: '房本'
+        },{
+          id:2, value: '正式'
+        },{
+          id:3, value: '其他'
+        }],
+        dataForm:{
+          // id: '',
+          name: '',
+          idCard: '',
+          phone: '',
+          mobileCode: '',
+          ownerPositive: '',
+          ownerNegative: '',
+          housingAuthority: '',
+          postType: '',
+          postRisk: 1,
+          postRiskId: '',
+          riskName: '',
+          postProvinceId: '',
+          postCityId: '',
+          postCountyId: '',
+          postAddress: '',
+          handleAreaId: '',
+          openid: ''
+        },
         show: true,
         count: '',
         timer: null
-    }
-  },
-  mounted(){
-    this.yuan();
-    this.kai();
-    this.shang();
-  },
-  methods:{
-    getCode(){
-      this.$http({
-        url: this.$http.adornUrl('/sendOrderMsg'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'phone': this.dataForm.phone
-        })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          const TIME_COUNT = 60;
-          if (!this.timer) {
-            this.count = TIME_COUNT;
-            this.show = false;
-            this.timer = setInterval(() => {
-              if (this.count > 0 && this.count <= TIME_COUNT) {
-                this.count--;
-              } else {
-                this.show = true;
-                clearInterval(this.timer);
-                this.timer = null;
-              }
-            }, 1000)
-          }
-        } else {
-          alert("请输入正确的手机号")
-          // console.log(data.msg)
-          // this.$message.error(data.msg)
-          // error
-        }
-      })
-   },
-    jump(e){
-      var form_list = this.dataForm
-      for(var i =0;i<form_list.length;i++){
-        if(form_list[i] == ''){
-          alert("请完善信息")
-          return
-        }
       }
-      this.dataForm.ownerPositive = ownerPositive
-      this.dataForm.ownerNegative = ownerNegative
-      this.dataForm.housingAuthority = housingAuthority
-
-      if(this.dataForm.postRisk === 2){
-        this.dataForm.postRiskId = 0
-      }
-
-      // let index = 'http://ems.jujinkeji.net/mobile/Index'
-      // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
-
-      this.$http({
-        url: this.$http.adornUrl('/mobile/order/create'),
-        method: 'post',
-        data: this.$http.adornData(this.dataForm)
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          // this.$message({
-          //   message: '操作成功',
-          //   type: 'success',
-          //   duration: 1500,
-          //   onClose: () => {
-          //     this.visible = false
-          //     this.$emit('refreshDataList')
-          //   }
-          // })
-          console.log("操作成功")
-          this.$router.push("/Index")
-        } else {
-          // this.$message.error(data.msg)
-          console.log(data.msg)
-        }
-      })
     },
-    goBack(){
-      this.$http({
-        url: this.$http.adornUrl('/pay/create'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'orderId': '1560171846460907',
-          'returnUrl': 'https:/www.baidu.com'
-        })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          console.log("999999999999")
-          console.log(data)
-
-          if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-            if( document.addEventListener ){
-              document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
-            }else if (document.attachEvent){
-              document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
-              document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+    mounted(){
+      this.yuan();
+      this.kai();
+      this.shang();
+    },
+    methods:{
+      getCode(){
+        this.$http({
+          url: this.$http.adornUrl('/sendOrderMsg'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'phone': this.dataForm.phone
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            const TIME_COUNT = 60;
+            if (!this.timer) {
+              this.count = TIME_COUNT;
+              this.show = false;
+              this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                  this.count--;
+                } else {
+                  this.show = true;
+                  clearInterval(this.timer);
+                  this.timer = null;
+                }
+              }, 1000)
             }
-          }else{
-            this.onBridgeReady(data);
+          } else {
+            alert("请输入正确的手机号")
+            // console.log(data.msg)
+            // this.$message.error(data.msg)
+            // error
           }
-
-
-        } else {
-          console.log(data.msg)
+        })
+      },
+      jump(e){
+        var form_list = this.dataForm
+        for(var i =0;i<form_list.length;i++){
+          if(form_list[i] == ''){
+            alert("请完善信息")
+            return
+          }
         }
-      })
+        this.dataForm.ownerPositive = ownerPositive
+        this.dataForm.ownerNegative = ownerNegative
+        this.dataForm.housingAuthority = housingAuthority
+        this.dataForm.openid = localStorage.getItem("openid")
 
-      // this.$router.push("/Index")
-    },
-    onBridgeReady:function(data){
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-          "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
-          "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
-          "nonceStr": data.data.payResponse.nonceStr, //随机串
-          "package": data.data.payResponse.package,
-          "signType": data.data.payResponse.signType,         //微信签名方式：
-          "paySign": data.data.payResponse.paySign //微信签名
-        },
-        function(res){
-           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+        this.dataForm.postRiskId = $('input:radio[name="dizhi"]:checked').val();
+
+
+        // let index = 'http://ems.jujinkeji.net/mobile/Index'
+        // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorize?returnUrl=' + index
+
+        this.$http({
+          url: this.$http.adornUrl('/mobile/order/create'),
+          method: 'post',
+          data: this.$http.adornData(this.dataForm)
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            console.log(data)
+            // this.$message({
+            //   message: '操作成功',
+            //   type: 'success',
+            //   duration: 1500,
+            //   onClose: () => {
+            //     this.visible = false
+            //     this.$emit('refreshDataList')
+            //   }
+            // })
+            // alert(data.orderId + '---------------' + data.data.orderId)
+            this.wechatPay(data.data.orderId)
+            console.log("操作成功")
+            // this.$router.push("/Index")
+          } else {
+            // this.$message.error(data.msg)
+            alert(data.msg)
+          }
+        })
+      },
+      wechatPay(orderId){
+        this.$http({
+          url: this.$http.adornUrl('/pay/create'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'orderId': orderId,
+            'returnUrl': 'http://ems.jujinkeji.net/mobile/Index'
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+              if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+              }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+              }
+            }else{
+              this.onBridgeReady(data);
+            }
+          } else {
+            alert(data.msg)
+          }
+        })
+      },
+      goBack(){
+        this.$http({
+          url: this.$http.adornUrl('/pay/create'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'orderId': '1560171846460907',
+            'returnUrl': 'http://ems.jujinkeji.net/mobile/Index'
+          })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
+              if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
+              }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
+                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
+              }
+            }else{
+              this.onBridgeReady(data);
+            }
+          } else {
+            alert(data.msg)
+          }
+        })
+
+        // this.$router.push("/Index")
+      },
+      onBridgeReady:function(data){
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": data.data.payResponse.appId,     //公众号名称，由商户传入
+            "timeStamp": data.data.payResponse.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": data.data.payResponse.nonceStr, //随机串
+            "package": data.data.payResponse.package,
+            "signType": data.data.payResponse.signType,         //微信签名方式：
+            "paySign": data.data.payResponse.paySign //微信签名
+          },
+          function(res){
+            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
               console.log("支付成功")
-           }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-          location.href = "${returnUrl}";
-        }
-      );
-    },
-
+            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+            location.href = "${returnUrl}";
+          }
+        );
+      },
+      city(){    //定义获取城市方法
+        const geolocation = new BMap.Geolocation();
+        var _this = this
+        geolocation.getCurrentPosition(function getinfo(position){
+          console.log(position)
+          let district = position.address.district   // 获取区信息
+          let city = position.address.city            //获取城市信息
+          let province = position.address.province    //获取省份信息
+          _this.dataForm.riskName = district
+          // _this.LocationCity = city
+          console.log("获取定位信息")
+          console.log(city)
+          console.log(province)
+        }, function(e) {
+          _this.LocationCity = "定位失败"
+        }, {provider: 'baidu'});
+      },
 
       kai(){
-      var hei = $(window).height()
-      $('.kai').click(function(){
+        var hei = $(window).height()
+        $('.kai').click(function(){
           $('.hidden').show();
           document.body.style.overflow='hidden';
           $('.hidden').height($("body").height());
           $('.infos').show();
           $("body").addClass('gun')
         })
-      $('.hidden').click(function(){
+        $('.hidden').click(function(){
           $('.hidden').hide();
           document.body.style.overflow='auto';
           $('.hidden').css('height','auto')
           $('.infos').hide();
           $("body").removeClass('gun')
         })
-      $('.guan').click(function(){
+        $('.guan').click(function(){
           $('.hidden').hide();
           document.body.style.overflow='auto';
           $('.hidden').css('height','auto')
@@ -373,26 +415,26 @@ export default {
         })
       },
       yuan(){
-      $('.round').click(function(){
-        if($('.round').attr('data')==0){
-          $('.round').attr('data',1)
-          $('.round').animate({
-            left:'4.5vw'
-          },200,function(){
-            $('.btn1').css('background','#09bb07')
-            $('.hide-box').css('display','block')
-          })
-        }else{
-          $('.round').attr('data',0)
-          $('.round').animate({
-            left:'0'
-          },200,function(){
-            $('.btn1').css('background','#fff')
-            $('.hide-box').css('display',"none")
-          })
-        }
-      })
-        },
+        $('.round').click(function(){
+          if($('.round').attr('data')==0){
+            $('.round').attr('data',1)
+            $('.round').animate({
+              left:'4.5vw'
+            },200,function(){
+              $('.btn1').css('background','#09bb07')
+              $('.hide-box').css('display','block')
+            })
+          }else{
+            $('.round').attr('data',0)
+            $('.round').animate({
+              left:'0'
+            },200,function(){
+              $('.btn1').css('background','#fff')
+              $('.hide-box').css('display',"none")
+            })
+          }
+        })
+      },
       shang(){
         $(".img1").click(function(){
           $('.file1').click()
@@ -419,7 +461,7 @@ export default {
           $('.img1').css('backgroundImage', "url(" + URL.createObjectURL($(this)[0].files[0]) + ')')
         })
         $(".img2").click(function(){
-            $('.file2').click()
+          $('.file2').click()
         })
         $('.file2').change(function(){
           let formData = new FormData();
@@ -443,7 +485,7 @@ export default {
           $('.img2').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
         })
         $(".img3").click(function(){
-            $('.file3').click()
+          $('.file3').click()
         })
         $('.file3').change(function(){
           let formData = new FormData();
@@ -466,177 +508,178 @@ export default {
           })
           $('.img3').css('backgroundImage',"url("+URL.createObjectURL($(this)[0].files[0])+')')
         })
-    },
+      },
 
-    getProvinceNames(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/area/list'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'parentId': this.parentId
-        })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.provinceNames = []
-          this.cityNames = []
-          this.countyNames = []
-          data.data.forEach((item) => {
-            this.provinceNames.push({
-              id: item.id,
-              name: item.name
-            })
+      getProvinceNames(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/area/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'parentId': this.parentId
           })
-        } else {
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.provinceNames = []
+            this.cityNames = []
+            this.countyNames = []
+            data.data.forEach((item) => {
+              this.provinceNames.push({
+                id: item.id,
+                name: item.name
+              })
+            })
+          } else {
             console.log(data.msg)
-        }
-      })
-    },
-    getCityNames(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/area/list'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'parentId': this.dataForm.postProvinceId
+          }
         })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.cityNames = []
-          this.countyNames = []
-          data.data.forEach((item) => {
-            this.cityNames.push({
-              id: item.id,
-              name: item.name
-            })
+      },
+      getCityNames(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/area/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'parentId': this.dataForm.postProvinceId
           })
-        } else {
-          console.log(data.msg)
-        }
-      })
-    },
-    getCountyNames(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/area/list'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'parentId': this.dataForm.postCityId
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.cityNames = []
+            this.countyNames = []
+            data.data.forEach((item) => {
+              this.cityNames.push({
+                id: item.id,
+                name: item.name
+              })
+            })
+          } else {
+            console.log(data.msg)
+          }
         })
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.countyNames = []
-          data.data.forEach((item) => {
-            this.countyNames.push({
-              id: item.id,
-              name: item.name
-            })
+      },
+      getCountyNames(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/area/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'parentId': this.dataForm.postCityId
           })
-        } else {
-          console.log(data.msg)
-        }
-      })
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.countyNames = []
+            data.data.forEach((item) => {
+              this.countyNames.push({
+                id: item.id,
+                name: item.name
+              })
+            })
+          } else {
+            console.log(data.msg)
+          }
+        })
+      },
+      getInsuredList(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/insured/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.insuredList = []
+            data.data.forEach((item) => {
+              this.insuredList.push({
+                id: item.insuredId,
+                name: item.insuredComment,
+                price: item.insuredAmount
+              })
+            })
+          } else {
+            console.log(data.msg)
+          }
+        })
+      },
+      getHandleArea(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/handlerArea/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.handleAreas = []
+            data.data.forEach((item) => {
+              this.handleAreas.push({
+                id: item.id,
+                name: item.handleAddress
+              })
+            })
+          } else {
+            console.log(data.msg)
+          }
+        })
+      },
     },
-    getInsuredList(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/insured/list'),
-        method: 'get',
-        params: this.$http.adornParams()
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.insuredList = []
-          data.data.forEach((item) => {
-            this.insuredList.push({
-              id: item.insuredId,
-              name: item.insuredComment,
-              price: item.insuredAmount
-            })
-          })
-        } else {
-          console.log(data.msg)
-        }
-      })
-    },
-    getHandleArea(){
-      this.$http({
-        url: this.$http.adornUrl('/mobile/handlerArea/list'),
-        method: 'get',
-        params: this.$http.adornParams()
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.handleAreas = []
-          data.data.forEach((item) => {
-            this.handleAreas.push({
-              id: item.id,
-              name: item.handleAddress
-            })
-          })
-        } else {
-          console.log(data.msg)
-        }
-      })
-    }
-},
 
-  created(){
-    this.getProvinceNames()
-    this.getInsuredList()
-    this.getHandleArea()
+    created(){
+      this.getProvinceNames()
+      this.getInsuredList()
+      this.getHandleArea()
+      this.city()
+    }
   }
-}
 </script>
 <style>
   *{
     box-sizing:border-box;
     padding:0;
     margin:0;}
-html,body{
+  html,body{
     width:100%;
     background:#f2f2f2;}
-.box{
+  .box{
     position: relative;
     width:100%;}
-.beijing{width:100%;}
-.beijing>img{width:100%;}
-.title{
+  .beijing{width:100%;}
+  .beijing>img{width:100%;}
+  .title{
     font-size:7vw;
     color:#fff;
     width:100%;
     text-align: center;
     position: absolute;
     top:12vw;}
-.content{
+  .content{
     width:94vw;
     padding:2vw;
     border-radius: 15px;
     position: relative;
     margin:-10vw auto 2rem;}
-.content-item{
+  .content-item{
     border-radius: 10px;
     padding:1vw 0 2vw !important;
     background:#fff;}
-.shoujian{
+  .shoujian{
     color:#2e2e2e;
     margin:2vw 0 0 5vw;
     font-size:6vw;}
-.img{
+  .img{
     position: absolute;
     top:4vw;
     left:-3vw;
     width:10vw;}
-.img>img{width:100%;}
-.item{
+  .img>img{width:100%;}
+  .item{
     margin-top:3vw;
     display:flex;
-    }
-.info-left{
+  }
+  .info-left{
     color:#333;
     height:8vw;
     line-height:8vw;
     text-align:right;
     font-size:4vw;
     width:30vw;}
-.info-right{
+  .info-right{
     line-height: 6vw;
     height:6vw;}
-.info-right>input{
+  .info-right>input{
     background:transparent;
     box-shadow: 0;
     font-size:4vw;
@@ -647,7 +690,7 @@ html,body{
     width:50vw;
     padding-left:1vw;
     height:8vw;}
-.btn{
+  .btn{
     color:#fff;
     border-radius: 5px;
     box-shadow: 0;
@@ -656,29 +699,29 @@ html,body{
     font-size:4vw;
     margin-left: 8vw;
     width:22vw;}
-.content-items{
+  .content-items{
     background:#fff;
     margin:2vw 0;
     border-radius: 10px;
     display:flex;
     justify-content:center;}
-.myfile{display:none;}
-.flexz{
+  .myfile{display:none;}
+  .flexz{
     color:#333;
     margin-bottom:3vw;
     font-size:4vw;}
-.content-items>div{
+  .content-items>div{
     margin:3vw;
     width:35vw;
     text-align:center;}
-.myimg{
+  .myimg{
     width:35vw;
     height:20vw;
     background:url(../../img/shang.jpg);
     background-repeat: no-repeat;
     background-position:center;
     background-size:contain;}
-.emil{
+  .emil{
     height:10vw;
     line-height:10vw;
     margin:2vw 0;
@@ -687,8 +730,8 @@ html,body{
     display:flex;
     justify-content: space-between;
     align-items: center;
-    }
-.emil>div{
+  }
+  .emil>div{
     color:#333;
     margin-right:2vw;
     height:10vw;
@@ -696,21 +739,21 @@ html,body{
     padding-left:6vw;
     font-size:4vw;
     width:30vw;}
-.emil>select{
-background:transparent;
-margin-right:4vw;
-color:#5a5a5a;
-height:8vw;
-display:flex;
-align-items: center;
-line-height:8vw;
-border-radius: 5px;
-border:1px solid #dadada;
-outline: none;
-font-size:4vw;
-padding-left:4vw;
-width:55vw;}
-.ji{
+  .emil>select{
+    background:transparent;
+    margin-right:4vw;
+    color:#5a5a5a;
+    height:8vw;
+    display:flex;
+    align-items: center;
+    line-height:8vw;
+    border-radius: 5px;
+    border:1px solid #dadada;
+    outline: none;
+    font-size:4vw;
+    padding-left:4vw;
+    width:55vw;}
+  .ji{
     margin:2vw 0vw 2vw 0;
     background:#fff;
 
@@ -718,7 +761,7 @@ width:55vw;}
     border-radius: 10px;
     display:flex;
     justify-content: space-between;}
-.ji>.btn-t{
+  .ji>.btn-t{
     display: flex;
     color:#333;
     height:5vw;
@@ -727,18 +770,18 @@ width:55vw;}
     font-size:4vw;
     justify-content: space-between;
     width:38vw;}
-.btn-t>img{
+  .btn-t>img{
     display: block;
     width:5vw;
     height:5vw;
     border-radius: 50%;}
-.btn1{
+  .btn1{
     border:1px solid #dadada;
     border-radius: 30px;
     background:#fff;
     width:10vw;
     position: relative;}
-.ji>.btn1>.round{
+  .ji>.btn1>.round{
     position: absolute;
     border:1px solid #dadada;
     background:#fff;
@@ -746,12 +789,12 @@ width:55vw;}
     top:-0.55vw;
     height:5.5vw;
     width:5.5vw;}
-.emil-item{
+  .emil-item{
     margin:2vw 0 2vw 4vw;
     margin-left:5vw;
     display:flex;
     justify-content: space-between;}
-.emil-item>select{
+  .emil-item>select{
     background:transparent;
     color:#5a5a5a;
     padding-left:2vw;
@@ -762,14 +805,14 @@ width:55vw;}
     border-radius: 5px;
     font-size:3vw;
     width:24vw;}
-.xx{
+  .xx{
     color:#333;
     font-size:4vw;
     display: flex;
     justify-content: space-between;
     margin-left:5vw;}
-.emil-box{padding-right:4vw;}
-.xx>input{
+  .emil-box{padding-right:4vw;}
+  .xx>input{
     background:transparent;
     border:1px solid #dadada;
     outline: none;
@@ -779,25 +822,25 @@ width:55vw;}
     padding-left:2vw;
     border-radius: 5px;
     width:51vw;}
-.btn2{
+  .btn2{
     width:70vw;
     display:flex;
     justify-content: space-between;
     margin:8vw 10vw 3vw;}
-.btn2>button{
+  .btn2>button{
     color:#fff;
     outline: none;
     border-radius: 40px;
     padding:1vw;
     font-size:4.5vw;
     width:26vw;}
-.sub{
+  .sub{
     border:1px solid #1bb9ff;
     background:#1bb9ff;}
-.del{
+  .del{
     border:1px solid #999;
     background:#999;}
-input[type=radio] {
+  input[type=radio] {
     display:block;
     /* vertical-align:middle; */
     width:5vw;
@@ -808,7 +851,7 @@ input[type=radio] {
     background-color: transparent;
     outline: 0 !important;
     line-height: 5vw;}
-input[type=radio]:after {
+  input[type=radio]:after {
     content:"";
     display:block;
     width:5vw;
@@ -818,45 +861,45 @@ input[type=radio]:after {
     line-height:5vw;
     font-size:5vw;
     box-sizing:border-box;}
-input[type=radio]:checked{border:0;}
-input[type=radio]:checked:after {
+  input[type=radio]:checked{border:0;}
+  input[type=radio]:checked:after {
     content: "L";
     color:#fff;
     transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
     -webkit-transform:matrix(-0.766044,-0.642788,-0.642788,0.766044,0,0);
     border-color:2px solid #09bb07;
     background-color: #09bb07;}
-.hide-box{
+  .hide-box{
     display: none;
     border-radius: 15px;
     padding:3vw 0 2vw;
     background:#fff;}
-.hide-item{
+  .hide-item{
     padding:3vw 4vw 3vw 0;
     border-bottom:1px dashed #ccc;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin-left:6vw;}
-.hide-item:last-child{border:0;}
-.left2{
+  .hide-item:last-child{border:0;}
+  .left2{
     font-size:3vw;
     color:#ccc;}
-.left1{
+  .left1{
     color:#838383;
     font-size:4vw;}
-.hide-left{
+  .hide-left{
     width:74vw;
     padding-right:3vw;
     justify-content: space-between;
     display:flex;}
-.myinput1{width:5vw;}
-.z{
+  .myinput1{width:5vw;}
+  .z{
     font-size:4vw;
     margin-top:2vw;
     font-weight:400;
     color:#ccc;}
-.hide-title{
+  .hide-title{
     color:#333;
     font-weight: 500;
     height:5vw;
@@ -864,15 +907,15 @@ input[type=radio]:checked:after {
     padding-left:6vw;
     font-size:4vw;
     width:30vw;}
-.hidden{
+  .hidden{
     background:rgba(0,0,0,.5);
     display:none;
-   /* bottom:0;*/
+    /* bottom:0;*/
     position:fixed;
     width:100vw;
     z-index:100;
     height:100vh;}
-.infos{
+  .infos{
     position: fixed;
     display: none;
     width:100vw;
@@ -883,7 +926,7 @@ input[type=radio]:checked:after {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     height:62vh;}
-.infos-title{
+  .infos-title{
     display:flex;
     border-bottom:1px solid #999;
     color:#333333;
@@ -893,43 +936,43 @@ input[type=radio]:checked:after {
     width:100vw;
     align-items: center;
     justify-content: space-between;}
-.guan{font-size:8vw;}
-.table-title{
+  .guan{font-size:8vw;}
+  .table-title{
     margin:3vw 0;
     font-size:5vw;
     color:#333;}
-.table-box{
+  .table-box{
     margin-bottom:8vw;
     text-align: center;
     width:100vw;}
-table{
+  table{
     margin:0 auto;
     font-size:3.5vw;
     width:80vw;
     border-color:#999;
-    }
-tr{height:5vw;}
-td{
+  }
+  tr{height:5vw;}
+  td{
     color:#333;
     text-align: center;}
-.beizhu{
+  .beizhu{
     margin:0 auto 15vw;
     width:80vw;}
-.b-title{
+  .b-title{
     font-size:5vw;
     color:#333;}
-.s-title{
+  .s-title{
     font-size:4 vw;
     color:#595959;
     list-style: none;}
-.youji{position: relative;}
-.y-img{
+  .youji{position: relative;}
+  .y-img{
     position: absolute;
     top:0;
     left:-10vw;
     width:10vw;}
-.y-img>img{width:100%;}
-.count2{
+  .y-img>img{width:100%;}
+  .count2{
     display:flex;
     text-align: center;
     align-items: center;
@@ -943,7 +986,7 @@ td{
     color:#fff;
     align-items: center;
     text-decoration: none;}
-.count1{
+  .count1{
     display:flex;
     outline:none;
     text-align: center;
@@ -957,12 +1000,12 @@ td{
     align-items: center;
     color:#fff;
     text-decoration: none;}
-.emil span{
+  .emil span{
     color: #333;
     margin-right: 4vw;
     height: 10vw;
     line-height: 10vw;
     padding-left: 6vw;
     font-size: 4vw;
-}
+  }
 </style>

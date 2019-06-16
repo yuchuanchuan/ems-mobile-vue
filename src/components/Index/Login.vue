@@ -78,8 +78,11 @@ export default {
         console.log(data)
         if (data && data.code === 0) {
           this.$cookie.set('token', data.data)
+
+          let index = 'http://ems.jujinkeji.net/mobile/Index'
+          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
-          this.$router.push({ path:'/Index'})
+          // this.$router.push({ path:'/Index'})
         } else {
           console.log(data.msg)
         }
