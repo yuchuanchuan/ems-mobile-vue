@@ -455,7 +455,7 @@
               left:'4.5vw'
             },200,function(){
               $('.btn1').css('background','#09bb07')
-              $('.hide-box').css('display','block')
+              
             })
           }else{
             $('.round').attr('data',0)
@@ -463,7 +463,7 @@
               left:'0'
             },200,function(){
               $('.btn1').css('background','#fff')
-              $('.hide-box').css('display',"none")
+              
             })
           }
         })
@@ -903,7 +903,6 @@
     border-color:2px solid #09bb07;
     background-color: #09bb07;}
   .hide-box{
-    display: none;
     border-radius: 15px;
     padding:3vw 0 2vw;
     background:#fff;}
