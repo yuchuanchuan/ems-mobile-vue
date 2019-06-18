@@ -4,7 +4,7 @@
 <div class="myinput">
     <div class="input-title phone">手机号</div>
     <div>
-        <input placeholder="输入手机号" class="input-item" style="width:50vw;" v-model="loginForm.phone">
+        <input placeholder="输入手机号" class="input-item" style="width:50vw;" v-model="loginForm.phone" @input="changePhone()">
     </div>
 </div>
 <div class="myinput">
@@ -13,6 +13,7 @@
         <input placeholder="短信验证码" class="input-item" v-model="loginForm.mobileCode">
     </div>
     <div class="huoqu">
+        <span class="count3">点击获取</span>
         <span v-show="show" @click="sendMsg" class="count1">点击获取</span>
         <span v-show="!show" class="count2">{{count}} s</span>
     </div>
@@ -38,6 +39,17 @@ export default {
     }
   },
   methods:{
+    changePhone(e){
+        var u = event.currentTarget.value;
+        var reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        if(!reg.test(u)){
+              $(".count1").css("display","none")
+                return;
+            }else{
+              $(".count3").css("display","none")
+              $(".count1").css("display","flex")
+            }
+      },
     sendMsg(){
       this.$http({
         url: this.$http.adornUrl('/sendMsg'),
@@ -80,7 +92,7 @@ export default {
           this.$cookie.set('token', data.data)
 
           let index = 'http://ems.jujinkeji.net/mobile/Index'
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          // location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
           // this.$router.push({ path:'/Index'})
         } else {
@@ -205,6 +217,22 @@ body{background:#fff;}
     width:30%;
     position: absolute;
     left:70%;}
+.count3{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    outline:none;
+    height:2rem;
+    background:#cdcdcd;
+    border-radius: 20px;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    align-items: center;
+    text-decoration: none;
+  }
 .count2{
     display:flex;
     text-align: center;
@@ -220,7 +248,7 @@ body{background:#fff;}
     align-items: center;
     text-decoration: none;}
 .count1{
-    display:flex;
+    display:none;
     text-align: center;
     align-items: center;
     border-radius: 20px;

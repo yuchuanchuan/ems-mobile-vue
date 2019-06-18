@@ -11,20 +11,21 @@
           <div class="info">
             <div class="item">
               <div class="info-left">姓名：</div>
-              <div class="info-right"><input type="text" placeholder="输入您的姓名" v-model="dataForm.name"></div>
+              <div class="info-right"><input type="text" placeholder="输入您的姓名" v-model="dataForm.name" class="uname" @blur.prevent="changeName()"></div>
             </div>
             <div class="item">
               <div class="info-left">身份证号：</div>
-              <div class="info-right"><input type="text" placeholder="输入您的身份证号" v-model="dataForm.idCard"></div>
+              <div class="info-right"><input type="text" placeholder="输入您的身份证号" v-model="dataForm.idCard" class="uid" @blur.prevent="changeId()"></div>
             </div>
             <div class="item">
               <div class="info-left">手机号：</div>
-              <div class="info-right"><input type="text" placeholder="输入您的手机号" v-model="dataForm.phone"></div>
+              <div class="info-right"><input type="text" placeholder="输入您的手机号" v-model="dataForm.phone" class="uphone" @input="changePhone()"></div>
             </div>
             <div class="item">
               <div class="info-left"> </div>
               <div class="info-right"><input style="width:20vw" type="text" v-model="dataForm.mobileCode"></div>
               <button class="btn">
+                <span class="count3">点击获取</span>
                 <span v-show="show" @click="getCode" class="count1">点击获取</span>
                 <span v-show="!show" class="count2">{{count}} s</span>
               </button>
@@ -226,6 +227,37 @@
       this.shang();
     },
     methods:{
+      changeName(e){
+        var u = event.currentTarget.value;
+        var reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
+        if(!reg.test(u)){
+              $(".uname").css("border","1px solid #ff3433")
+                return;
+            }else{
+              $(".uname").css("border","1px solid #dadada")
+            }
+      },
+      changeId(e){
+        var reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/;
+        var u = event.currentTarget.value;
+        if(!reg.test(u)){
+              $(".uid").css("border","1px solid #ff3433")
+                return;
+            }else{
+              $(".uid").css("border","1px solid #dadada")
+            }
+      },
+      changePhone(e){
+        var u = event.currentTarget.value;
+        var reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+        if(!reg.test(u)){
+              $(".count1").css("display","none")
+                return;
+            }else{
+              $(".count3").css("display","none")
+              $(".count1").css("display","flex")
+            }
+      },
       getCode(){
         this.$http({
           url: this.$http.adornUrl('/sendOrderMsg'),
@@ -791,7 +823,7 @@
     height:5.5vw;
     width:5.5vw;}
   .emil-item{
-    margin:2vw 0 2vw 4vw;
+    margin:2vw 0 3.5vw 4vw;
     margin-left:5vw;
     display:flex;
     justify-content: space-between;}
@@ -973,6 +1005,21 @@
     left:-10vw;
     width:10vw;}
   .y-img>img{width:100%;}
+  .count3{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    outline:none;
+    height:2rem;
+    background:#cdcdcd;
+    width:30%;
+    justify-content: center;
+    width:100%;
+    text-align:center;
+    color:#fff;
+    align-items: center;
+    text-decoration: none;
+  }
   .count2{
     display:flex;
     text-align: center;
@@ -988,7 +1035,7 @@
     align-items: center;
     text-decoration: none;}
   .count1{
-    display:flex;
+    display:none;
     outline:none;
     text-align: center;
     align-items: center;
