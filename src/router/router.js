@@ -7,6 +7,7 @@ import Ex from '../components/Index/Ex.vue'
 import Info from '../components/Index/Info.vue'
 import List from '../components/Index/List.vue'
 import Login from '../components/Index/Login.vue'
+import Tz from '../components/Index/Tz.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -14,6 +15,7 @@ export default new Router({
   mode: 'history',
   routes: [
     { path: '/', redirect: '/login' },
+    {path: '/tz', name:'tz', component: Tz},
     {path: '/login', name:'login', component: Login},
     {path: '/Sub', name:'Sub', component: Sub},
     {path: "/Info", name:'Info', component: Info},

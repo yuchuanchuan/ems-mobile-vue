@@ -26,8 +26,8 @@
               <div class="info-right"><input style="width:20vw" type="text" v-model="dataForm.mobileCode"></div>
               <button class="btn">
                 <span class="count3">点击获取</span>
-                <span v-show="show" @click="getCode" class="count1">点击获取</span>
-                <span v-show="!show" class="count2">{{count}} s</span>
+                <span @click="getCode" class="count1">点击获取</span>
+                <span class="count2">{{count}} s</span>
               </button>
             </div>
           </div>
@@ -231,10 +231,12 @@
         var u = event.currentTarget.value;
         var reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         if(!reg.test(u)){
-              $(".uname").css("border","1px solid #ff3433")
+              $(".count1").hide()
                 return;
             }else{
-              $(".uname").css("border","1px solid #dadada")
+              $(".count3").hide()
+              $(".count1").show()
+              $(".count2").hide()
             }
       },
       changeId(e){
@@ -270,12 +272,15 @@
             const TIME_COUNT = 60;
             if (!this.timer) {
               this.count = TIME_COUNT;
-              this.show = false;
               this.timer = setInterval(() => {
                 if (this.count > 0 && this.count <= TIME_COUNT) {
                   this.count--;
+                  $('.count2').show()
+                  $('.count1').hide()
                 } else {
-                  this.show = true;
+                  $('.count3').hide()
+                  $('.count2').hide()
+                  $('.count1').show()
                   clearInterval(this.timer);
                   this.timer = null;
                 }
@@ -290,6 +295,17 @@
         })
       },
       jump(e){
+        var xdz = $(".xx input").val()
+        console.log(xdz)
+        if(xdz==null){
+          alert("请填写详细地址")
+          return
+        }
+        var dz = $('.emil-item select').val()
+        if(dz==null){
+          alert("请填写详细地址")
+          return
+        }
         var form_list = this.dataForm
         for(var i =0;i<form_list.length;i++){
           if(form_list[i] == ''){
@@ -1020,7 +1036,7 @@
     text-decoration: none;
   }
   .count2{
-    display:flex;
+    display:none;
     text-align: center;
     align-items: center;
     outline:none;

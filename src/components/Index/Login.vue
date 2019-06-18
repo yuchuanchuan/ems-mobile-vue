@@ -14,8 +14,8 @@
     </div>
     <div class="huoqu">
         <span class="count3">点击获取</span>
-        <span v-show="show" @click="sendMsg" class="count1">点击获取</span>
-        <span v-show="!show" class="count2">{{count}} s</span>
+        <span  @click="sendMsg" class="count1">点击获取</span>
+        <span  class="count2">{{count}} s</span>
     </div>
 </div>
 <div class="login">
@@ -43,11 +43,12 @@ export default {
         var u = event.currentTarget.value;
         var reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
         if(!reg.test(u)){
-              $(".count1").css("display","none")
+              $(".count1").hide()
                 return;
             }else{
-              $(".count3").css("display","none")
-              $(".count1").css("display","flex")
+              $(".count3").hide()
+              $(".count1").show()
+              $(".count2").hide()
             }
       },
     sendMsg(){
@@ -66,7 +67,12 @@ export default {
             this.timer = setInterval(() => {
               if (this.count > 0 && this.count <= TIME_COUNT) {
                 this.count--;
+                $('.count2').show()
+                $('.count1').hide()
               } else {
+                $('.count3').hide()
+                $('.count2').hide()
+                $('.count1').show()
                 this.show = true;
                 clearInterval(this.timer);
                 this.timer = null;
@@ -92,7 +98,7 @@ export default {
           this.$cookie.set('token', data.data)
 
           let index = 'http://ems.jujinkeji.net/mobile/Index'
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          //location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
           // this.$router.push({ path:'/Index'})
         } else {
@@ -234,7 +240,7 @@ body{background:#fff;}
     text-decoration: none;
   }
 .count2{
-    display:flex;
+    display:none;
     text-align: center;
     align-items: center;
     border-radius: 20px;
@@ -261,5 +267,4 @@ body{background:#fff;}
     align-items: center;
     color:#fff;
     text-decoration: none;}
-
 </style>
