@@ -98,11 +98,11 @@ export default {
           this.$cookie.set('token', data.data)
 
           let index = 'http://ems.jujinkeji.net/mobile/Index'
-          //location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
           // this.$router.push({ path:'/Index'})
         } else {
-          console.log(data.msg)
+          alert(data.msg)
         }
       }).catch((err)=>{
         alert("请输入正确的手机号或验证码")

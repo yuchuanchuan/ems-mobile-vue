@@ -123,59 +123,61 @@
       </div>
     </div>
     <div class="infos">
-      <div class="infos-title">
-        <div>投递保险详情</div>
-        <div class="guan">×</div>
-      </div>
-      <div class="table-box">
-        <div class="table-title">不动产权登记中心EMS邮寄寄费标准</div>
-        <table  cellspacing=0 cellpadding=0 border="1">
-          <tr>
-            <td rowspan="2">寄达地</td>
-            <td>咨费标准</td>
-            <td rowspan="2">备注</td>
-          </tr>
-          <tr>
-            <td>500G以内(元)</td>
-          </tr>
-          <tr>
-            <td rowspan="2">天津<br></td>
-            <td rowspan="2">20<br></td>
-            <td rowspan="2"></td>
-          </tr>
-          <tr>
+      <div v-html="postInfo"></div>
 
-          </tr>
-          <tr>
-            <td rowspan="2">外阜<br></td>
-            <td rowspan="2">20<br></td>
-            <td rowspan="2">新疆、西藏除外<br></td>
-          </tr>
-          <tr>
-          </tr>
-          <tr>
-            <td rowspan="2">新疆、西藏<br></td>
-            <td rowspan="2">24(首重1kg)<br></td>
-            <td rowspan="2"></td>
-          </tr>
-          <tr>
-          </tr>
-        </table>
-      </div>
-      <div class="beizhu">
-        <div class="b-title">备注：</div>
-        <ul class="s-title">
-          <li>1.个性化服务的业务，根据其特殊的服务标准、操作流程执行个性化的资费标准</li>
-          <li>2.计泡规定：对长、宽、高三边中任一单边达到60cm以上（含60cm）的邮件，计算体积重量（长（cm））X宽（cm）X高（cm）/6000（cm3/kg）），并取体积重量和实际重量中的较大者，计算资费。</li>
-          <li>3.返单业务资费：实物返单3元/票，个性化返单每增加一份，资费增加1元。</li>
-        </ul>
-      </div>
+      <!--<div class="infos-title">-->
+        <!--<div>投递保险详情</div>-->
+        <!--<div class="guan">×</div>-->
+      <!--</div>-->
+      <!--<div class="table-box">-->
+        <!--<div class="table-title">不动产权登记中心EMS邮寄寄费标准</div>-->
+        <!--<table  cellspacing=0 cellpadding=0 border="1">-->
+          <!--<tr>-->
+            <!--<td rowspan="2">寄达地</td>-->
+            <!--<td>咨费标准</td>-->
+            <!--<td rowspan="2">备注</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>500G以内(元)</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td rowspan="2">天津<br></td>-->
+            <!--<td rowspan="2">20<br></td>-->
+            <!--<td rowspan="2"></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td rowspan="2">外阜<br></td>-->
+            <!--<td rowspan="2">20<br></td>-->
+            <!--<td rowspan="2">新疆、西藏除外<br></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td rowspan="2">新疆、西藏<br></td>-->
+            <!--<td rowspan="2">24(首重1kg)<br></td>-->
+            <!--<td rowspan="2"></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+          <!--</tr>-->
+        <!--</table>-->
+      <!--</div>-->
+      <!--<div class="beizhu">-->
+        <!--<div class="b-title">备注：</div>-->
+        <!--<ul class="s-title">-->
+          <!--<li>1.个性化服务的业务，根据其特殊的服务标准、操作流程执行个性化的资费标准</li>-->
+          <!--<li>2.计泡规定：对长、宽、高三边中任一单边达到60cm以上（含60cm）的邮件，计算体积重量（长（cm））X宽（cm）X高（cm）/6000（cm3/kg）），并取体积重量和实际重量中的较大者，计算资费。</li>-->
+          <!--<li>3.返单业务资费：实物返单3元/票，个性化返单每增加一份，资费增加1元。</li>-->
+        <!--</ul>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
 <script>
   import 'jquery'
-  import BMap from 'BMap'
+  import { location } from "../../utils/location";
 
   var ownerPositive = '';  // 正面身份证
   var ownerNegative = '';  // 反面身份证
@@ -189,6 +191,7 @@
         countyNames: [],
         insuredList: [],
         handleAreas: [],
+        postInfo: '',
         postTypes:[{
           id:1, value: '房本'
         },{
@@ -197,7 +200,7 @@
           id:3, value: '其他'
         }],
         dataForm:{
-          // id: '',
+          orderId: '',
           name: '',
           idCard: '',
           phone: '',
@@ -341,6 +344,7 @@
             //   }
             // })
             // alert(data.orderId + '---------------' + data.data.orderId)
+            this.dataForm.orderId = data.data.orderId
             this.wechatPay(data.data.orderId)
             console.log("操作成功")
             // this.$router.push("/Index")
@@ -376,31 +380,7 @@
         })
       },
       goBack(){
-        this.$http({
-          url: this.$http.adornUrl('/pay/create'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'orderId': '1560171846460907',
-            'returnUrl': 'http://ems.jujinkeji.net/mobile/Index'
-          })
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-              if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data), false);
-              }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data));
-                document.attachEvent('onWeixinJSBridgeReady',this.onBridgeReady(data));
-              }
-            }else{
-              this.onBridgeReady(data);
-            }
-          } else {
-            alert(data.msg)
-          }
-        })
-
-        // this.$router.push("/Index")
+        location.href = 'http://ems.jujinkeji.net/mobile/Index'
       },
       onBridgeReady:function(data){
         WeixinJSBridge.invoke(
@@ -414,29 +394,42 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              console.log("支付成功")
-              this.$router.push("/Index")
-            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+              this.$http({
+                url: this.$http.adornUrl('/mobile/order/mail'),
+                method: 'post',
+                data: this.$http.adornData({
+                  orderId: this.dataForm.orderId
+                })
+              }).then(({ data }) => {
+                if (data && data.code === 0) {
+                  location.href = 'http://ems.jujinkeji.net/mobile/Index'
+                } else {
+                  alert(data.msg)
+                }
+              })
+
+            }
             // location.href = "${returnUrl}";
           }
         );
       },
-      city(){    //定义获取城市方法
-        const geolocation = new BMap.Geolocation();
-        var _this = this
-        geolocation.getCurrentPosition(function getinfo(position){
-          console.log(position)
-          let district = position.address.district   // 获取区信息
-          let city = position.address.city            //获取城市信息
-          let province = position.address.province    //获取省份信息
-          _this.dataForm.riskName = district
-          // _this.LocationCity = city
-          console.log("获取定位信息")
-          console.log(city)
-          console.log(province)
-        }, function(e) {
-          _this.LocationCity = "定位失败"
-        }, {provider: 'baidu'});
+
+      //定位获得当前位置信息
+      getMyLocation() {
+        let geolocation = new qq.maps.Geolocation("I2DBZ-FPWC5-JVNIC-QDFG6-34YI7-2YF46", "网页应用-地理位置");
+        geolocation.getIpLocation(this.showPosition, this.showErr);
+      },
+      showPosition(position) {
+        console.log(position);
+        // this.latitude = position.lat;
+        // this.longitude = position.lng;
+        // this.city = position.city;
+        this.dataForm.riskName = position.district
+      },
+      showErr() {
+        console.log("定位失败");
+        this.dataForm.riskName = '西青区'
+        // this.getMyLocation();
       },
 
       kai(){
@@ -471,7 +464,7 @@
               left:'4.5vw'
             },200,function(){
               $('.btn1').css('background','#09bb07')
-              
+
             })
           }else{
             $('.round').attr('data',0)
@@ -479,7 +472,7 @@
               left:'0'
             },200,function(){
               $('.btn1').css('background','#fff')
-              
+
             })
           }
         })
@@ -660,17 +653,31 @@
               })
             })
           } else {
-            console.log(data.msg)
+            alert(data.msg)
           }
         })
       },
+      getPostInfo(){
+        this.$http({
+          url: this.$http.adornUrl('/mobile/post/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.postInfo = data.data.postComment
+          } else {
+            alert(data.msg)
+          }
+        })
+      }
     },
 
     created(){
       this.getProvinceNames()
       this.getInsuredList()
       this.getHandleArea()
-      this.city()
+      this.getMyLocation()
+      this.getPostInfo()
     }
   }
 </script>

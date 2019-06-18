@@ -1,6 +1,8 @@
 /**
  * Created by jiachenpan on 16/11/18.
  */
+import moment from 'moment'
+
 export function isvalidUsername (str) {
   const validMap = ['admin', 'editor']
   return validMap.indexOf(str.trim()) >= 0
@@ -69,4 +71,10 @@ export function isPhone (s) {
  */
 export function isURL (s) {
   return /^http[s]?:\/\/.*/.test(s)
+}
+
+export function dateToMinute (date) {
+  if(date){
+    return  moment(date).format('YYYY-MM-DD HH:mm:ss')
+  }
 }

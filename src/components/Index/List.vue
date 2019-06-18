@@ -5,40 +5,66 @@
     </div>
     <div class="title">订单列表</div>
     <ul class="content">
-        <li class="items">
-            <div class="list">运单号：<span>10216359874</span></div>
-            <div class="list">下单时间：<span>2019-5-11 15:59</span></div>
-            <div class="list last">发货状态：<span>待揽件</span></div>
+        <li class="items" v-for="(item,index) in orderList" :key="index">
+            <div class="list">订单号：<span>{{item.orderNumber}}</span></div>
+            <div class="list" v-if="item.status !== 1">运单号：<span>{{item.mailNum}}</span></div>
+            <div class="list">下单时间：<span>2019-5-10 09:59</span></div>
+            <div class="list last">订单状态：<span>待揽件</span></div>
             <div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>
         </li>
-        <li class="items">
-                <div class="list">运单号：<span>10216359354</span></div>
-                <div class="list">下单时间：<span>2019-5-10 09:59</span></div>
-                <div class="list last">发货状态：<span>待收货</span></div>
-                <div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>
-        </li>
-        <li class="items">
-            <div class="list">运单号：<span>10216359682</span></div>
-            <div class="list">下单时间：<span>2019-5-9 11:23</span></div>
-            <div class="list last">发货状态：<span>已完成</span></div>
-            <div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>
-        </li>
-        <li class="items">
-            <div class="list">运单号：<span>10216356358</span></div>
-            <div class="list">下单时间：<span>2019-5-7 11:23</span></div>
-            <div class="list last">发货状态：<span>已完成</span></div>
-            <div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>
-        </li>
+        <!--<li class="items">-->
+                <!--<div class="list">运单号：<span>10216359354</span></div>-->
+                <!--<div class="list">下单时间：<span>2019-5-10 09:59</span></div>-->
+                <!--<div class="list last">发货状态：<span>待收货</span></div>-->
+                <!--<div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>-->
+        <!--</li>-->
+        <!--<li class="items">-->
+            <!--<div class="list">运单号：<span>10216359682</span></div>-->
+            <!--<div class="list">下单时间：<span>2019-5-9 11:23</span></div>-->
+            <!--<div class="list last">发货状态：<span>已完成</span></div>-->
+            <!--<div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>-->
+        <!--</li>-->
+        <!--<li class="items">-->
+            <!--<div class="list">运单号：<span>10216356358</span></div>-->
+            <!--<div class="list">下单时间：<span>2019-5-7 11:23</span></div>-->
+            <!--<div class="list last">发货状态：<span>已完成</span></div>-->
+            <!--<div class="tab"><router-link class="router" to="/Info">查看详情</router-link></div>-->
+        <!--</li>-->
     </ul>
     <div style="clear:both;"></div>
 </div>
-</div> 
+</div>
 </template>
 <script>
+  import { dateToMinute } from '../../utils/validate'
 export default {
   data () {
     return {
+      orderList: []
     }
+  },
+  methods:{
+    getUserOrderList(){
+      this.$http({
+        url: this.$http.adornUrl('/mobile/order/userOrderList'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          console.log(data)
+          this.orderList = []
+          // data.data.forEach((item) => {
+          //   item.createOrderTime = dateToMinute(item.createOrderTime)
+          // })
+          this.orderList = data.data
+        } else {
+          alert(data.msg)
+        }
+      })
+    }
+  },
+  created(){
+    this.getUserOrderList()
   }
 }
 </script>
@@ -54,7 +80,7 @@ export default {
 html,body{
     width:100%;
     background:#f2f2f2;}
-.box{ 
+.box{
     position: relative;
     width:100%;}
 .beijing{width:100%;}
@@ -70,7 +96,7 @@ html,body{
     overflow:auto;
     list-style: none;
     width:94%;
-    margin:-10vw auto 3rem;} 
+    margin:-10vw auto 3rem;}
 .items{
     color:#575757;
     margin-bottom:1rem;
