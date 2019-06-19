@@ -240,18 +240,13 @@
     },
     methods:{
       changeName(e){
-        
         var u = event.currentTarget.value;
         var reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
-        if(!reg.test(u)){
-            $(".uname").css("border","1px solid #ff3433")
-              $(".count1").hide()
-                return;
-            }else{
+        if(reg.test(u)){
               $(".uname").css("border","1px solid #dadada")
-              $(".count3").hide()
-              $(".count1").show()
-              $(".count2").hide()
+            }if(!reg.test(u)){
+            $(".uname").css("border","1px solid #ff3433")
+                return;
             }
       },
       changeId(e){
@@ -263,16 +258,22 @@
             }else{
               $(".uid").css("border","1px solid #dadada")
             }
+            
       },
       changePhone(e){
+        var a = this.dataForm.phone
+        
         var u = event.currentTarget.value;
         var reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
         if(!reg.test(u)){
-              $(".count1").css("display","none")
+              $(".count1").hide()
+              $(".count3").show()
+              $(".count2").hide()
                 return;
             }else{
-              $(".count3").css("display","none")
+              $(".count3").hide()
               $(".count1").css("display","flex")
+              $(".count2").hide()
             }
       },
       getCode(){
@@ -441,7 +442,7 @@
               // })
 
             }
-            location.href = "${returnUrl}";
+            //location.href = "${returnUrl}";
           }
         );
       },

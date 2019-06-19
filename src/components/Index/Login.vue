@@ -44,10 +44,12 @@ export default {
         var reg = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
         if(!reg.test(u)){
               $(".count1").hide()
+              $(".count3").show()
+              $(".count2").hide()
                 return;
             }else{
               $(".count3").hide()
-              $(".count1").show()
+              $(".count1").css("display","flex")
               $(".count2").hide()
             }
       },
