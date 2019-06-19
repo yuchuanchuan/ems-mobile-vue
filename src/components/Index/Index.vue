@@ -4,7 +4,7 @@
     <div class="logo"><img src="../../img/logo.png"></div>
     <div class="tongzhi">
         <img src="../../img/tongzhi.png">
-        <span>快递通知：</span>
+        <span>公告：</span>
         <div class="scroll_area">
         <div class="content">
           <div class="scrolltxt">

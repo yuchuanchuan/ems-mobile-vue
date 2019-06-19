@@ -1,5 +1,5 @@
 <template>
-<div id="app-login">
+  <div id="app-login">
     <div class="logo"><img src="../../img/logo.png"></div>
 <div class="myinput">
     <div class="input-title phone">手机号</div>
@@ -23,7 +23,7 @@
 </div>
 <div class="vx">微信授权登录</div>
 <a href="#" class="vx-img" @click="weChatLogin"><img src="../../img/weixin.png"></a>
-</div>
+  </div>
 </template>
 <script>
 export default {
@@ -98,7 +98,7 @@ export default {
           this.$cookie.set('token', data.data)
 
           let index = 'http://ems.jujinkeji.net/mobile/Index'
-          location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
+          //location.href = 'http://ems.jujinkeji.net/mobile-ems/wechat/authorOpenId?returnUrl=' + index
           // this.$route
           // this.$router.push({ path:'/Index'})
         } else {
@@ -229,6 +229,7 @@ body{background:#fff;}
     align-items: center;
     outline:none;
     height:2rem;
+    line-height: 2rem;
     background:#cdcdcd;
     border-radius: 20px;
     width:30%;
@@ -245,6 +246,7 @@ body{background:#fff;}
     align-items: center;
     border-radius: 20px;
     height:2rem;
+    line-height: 2rem;
     background:#cdcdcd;
     width:30%;
     justify-content: center;
@@ -259,6 +261,7 @@ body{background:#fff;}
     align-items: center;
     border-radius: 20px;
     height:2rem;
+    line-height: 2rem;
     background:#1bb9ff;
     width:30%;
     justify-content: center;

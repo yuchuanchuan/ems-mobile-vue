@@ -1,5 +1,11 @@
 <template>
-  <div id="app-sub">
+<div>
+    <div class="zf" v-show="!show">
+      <img src="../../img/dui.png">
+      <div class="ta1">支付成功!</div>
+      <div class="ta2">{{acount}}秒后跳转到<span class="ta3" @click="jump1">首页</span></div>
+    </div>
+  <div id="app-sub" v-show="show">
     <div class="hidden"></div>
     <div class="box">
       <div class="beijing"><img src="../../img/beijing.png"></div>
@@ -174,6 +180,7 @@
       <!--</div>-->
     </div>
   </div>
+</div>
 </template>
 <script>
   import 'jquery'
@@ -221,7 +228,9 @@
         },
         show: true,
         count: '',
-        timer: null
+        acount:'',
+        timer: null,
+        atimer:null
       }
     },
     mounted(){
@@ -231,12 +240,15 @@
     },
     methods:{
       changeName(e){
+        
         var u = event.currentTarget.value;
         var reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;
         if(!reg.test(u)){
+            $(".uname").css("border","1px solid #ff3433")
               $(".count1").hide()
                 return;
             }else{
+              $(".uname").css("border","1px solid #dadada")
               $(".count3").hide()
               $(".count1").show()
               $(".count2").hide()
@@ -296,6 +308,9 @@
             // error
           }
         })
+      },
+      jump1(){
+        this.$router.push({path:'/index'})
       },
       jump(e){
         var xdz = $(".xx input").val()
@@ -380,7 +395,8 @@
         })
       },
       goBack(){
-        location.href = 'http://ems.jujinkeji.net/mobile/Index'
+        this.$router.push({path:'/index'})
+        //location.href = 'http://ems.jujinkeji.net/mobile/Index'
       },
       onBridgeReady:function(data){
         WeixinJSBridge.invoke(
@@ -394,22 +410,38 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              this.$http({
-                url: this.$http.adornUrl('/mobile/order/mail'),
-                method: 'post',
-                data: this.$http.adornData({
-                  orderId: this.dataForm.orderId
-                })
-              }).then(({ data }) => {
-                if (data && data.code === 0) {
-                  location.href = 'http://ems.jujinkeji.net/mobile/Index'
+              const TIME_COUNT1 = 3;
+              this.show= false;
+            if (!this.atimer) {
+              this.acount = TIME_COUNT1;
+              this.atimer = setInterval(() => {
+                if (this.acount > 0 && this.acount <= TIME_COUNT1) {
+                  this.acount--;
                 } else {
-                  alert(data.msg)
+                  this.$router.push({path:'/index'})
+                  clearInterval(this.atimer);
+                  this.atimer = null;
                 }
-              })
+              }, 1000)
+            }
+
+              // this.$http({
+              //   url: this.$http.adornUrl('/mobile/order/mail'),
+              //   method: 'post',
+              //   data: this.$http.adornData({
+              //     orderId: this.dataForm.orderId
+              //   })
+              // }).then(({ data }) => {
+              //   if (data && data.code === 0) {
+
+              //     location.href = 'http://ems.jujinkeji.net/mobile/Index'
+              //   } else {
+              //     alert(data.msg)
+              //   }
+              // })
 
             }
-            // location.href = "${returnUrl}";
+            location.href = "${returnUrl}";
           }
         );
       },
@@ -686,6 +718,32 @@
     box-sizing:border-box;
     padding:0;
     margin:0;}
+  .zf{
+    position:fixed;
+    height:100%;
+    width:100%;
+    top:0;
+  }
+  .zf>img{
+    display:block;
+    width:30%;
+    margin:20vh auto 0;
+  }
+  .ta1{
+    font-weight: bold;
+    text-align:center;
+    color:#333;
+    margin:2vh 0;
+    font-size:5vw;
+  }
+  .ta2{
+    color:#999;
+    font-size:4vw;
+    text-align:center;
+  }
+  .ta2>.ta3{
+    color:#1bb9ff;
+  }
   html,body{
     width:100%;
     background:#f2f2f2;}
@@ -812,7 +870,6 @@
   .ji{
     margin:2vw 0vw 2vw 0;
     background:#fff;
-
     padding:2vw 4vw 2vw 0;
     border-radius: 10px;
     display:flex;
@@ -1033,6 +1090,7 @@
     align-items: center;
     outline:none;
     height:2rem;
+    line-height: 2rem;
     background:#cdcdcd;
     width:30%;
     justify-content: center;
@@ -1048,6 +1106,7 @@
     align-items: center;
     outline:none;
     height:2rem;
+    line-height: 2rem;
     background:#cdcdcd;
     width:30%;
     justify-content: center;
@@ -1062,6 +1121,7 @@
     text-align: center;
     align-items: center;
     height:2rem;
+    line-height: 2rem;
     background:#1bb9ff;
     width:30%;
     justify-content: center;
