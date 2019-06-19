@@ -233,6 +233,16 @@
         atimer:null
       }
     },
+    beforeRouteEnter (to, from, next) {
+      let u = navigator.userAgent;
+      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      // XXX: 修复iOS版微信HTML5 History兼容性问题
+      if (isiOS && "/mobile" + to.path !== window.location.pathname) {
+        window.location.assign('http://ems.jujinkeji.net/mobile/Sub')
+      } else {
+        next()
+      }
+    },
     mounted(){
       this.yuan();
       this.kai();
@@ -411,7 +421,6 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              alert("支付成功----")
               const TIME_COUNT1 = 3;
               this.show= false;
             if (!this.atimer) {
@@ -420,9 +429,9 @@
                 if (this.acount > 0 && this.acount <= TIME_COUNT1) {
                   this.acount--;
                 } else {
-                  alert("支付成功11010----")
-                  this.$router.push({path:'/index'})
+                  // this.$router.push({path:'/index'})
                   // location.href = 'http://ems.jujinkeji.net/mobile/Index'
+                  window.location.assign('http://ems.jujinkeji.net/mobile/Index')
                   clearInterval(this.atimer);
                   this.atimer = null;
                 }
@@ -450,23 +459,7 @@
         );
       },
 
-      //定位获得当前位置信息
-      // getMyLocation() {
-      //   let geolocation = new qq.maps.Geolocation("I2DBZ-FPWC5-JVNIC-QDFG6-34YI7-2YF46", "网页应用-地理位置");
-      //   geolocation.getIpLocation(this.showPosition, this.showErr);
-      // },
-      // showPosition(position) {
-      //   console.log(position);
-      //   // this.latitude = position.lat;
-      //   // this.longitude = position.lng;
-      //   // this.city = position.city;
-      //   this.dataForm.riskName = position.district
-      // },
-      // showErr() {
-      //   console.log("定位失败");
-      //   this.dataForm.riskName = '西青区'
-      //   // this.getMyLocation();
-      // },
+
 
       kai(){
         var hei = $(window).height()
@@ -710,23 +703,19 @@
 
       ///////////////////////////////////////////地理位置测试//////////////////////
       getMyLocation(){
-        console.log("====获取地理位置信息===")
-
         let that = this;
-        // alert(location.href.split('#')[0]);
 
         that.$http({
           url: that.$http.adornUrl('/wechatJs/location'),
           method: 'get',
           params: that.$http.adornParams({
-            'url': location.href.replace(location.hash, '')
+            'url': window.location.href.replace(location.hash, '')
           })
         }).then(({ data }) => {
           if (data && data.code === 0) {
-            console.log("微信配置地理位置")
-            alert(data.data.url)
+
             wx.config({
-              debug: true,
+              debug: false,
               appId: data.data.appId,
               nonceStr: data.data.nonceStr,
               timestamp: data.data.timestamp,
@@ -753,31 +742,42 @@
 //                    //alert(res.err_msg + "唯一");
 //                });
               wx.getLocation({
+                type: 'wgs84',
                 success: function (res) {
-                  alert("成功获取地理位置信息")
-                  alert(res)
-//                                console.log(res)
+
                   that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                   that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 
-                  // that.point = new BMap.Point(that.pointX,that.pointY);
-                  // that.marker = new BMap.Marker(that.point); // 创建点
-
-                  this.dataForm.riskName = that.pointX + '--' + that.pointY
-                  alert(that.pointX + '--' + that.pointY)
-                  // that.getShopFjStudio()
+                  that.$http({
+                    url: that.$http.adornUrl('/getLocationName'),
+                    method: 'get',
+                    params: that.$http.adornParams({
+                      'lng': that.pointX,
+                      'lat': that.pointY
+                    })
+                  }).then(({ data }) => {
+                    if (data && data.code === 0) {
+                      that.dataForm.riskName = data.data
+                    } else {
+                      alert(data.msg)
+                    }
+                  })
                 },
                 cancel: function (res) {
                   alert('用户拒绝授权获取地理位置');
                   // that.getShopFjStudio()
+                },
+                fail: function (res) {
+                  console.log("获取地理位置失败")
                 }
               });
             });
 
-            wx.error(function (res) {
-               console.log(res)
-//               that.getShopFjStudio()
-            });
+//             wx.error(function (res) {
+//               alert("获取地理位置失败");
+//                console.log(res)
+// //               that.getShopFjStudio()
+//             });
           } else {
             console.log(data.msg)
           }

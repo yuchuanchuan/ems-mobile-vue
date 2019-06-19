@@ -11,6 +11,7 @@ Vue.use(VueCookie)
 Vue.prototype.$http = httpRequest// ajax请求方法
 Vue.config.productionTip = false
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
