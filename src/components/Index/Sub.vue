@@ -429,7 +429,7 @@
                 if (this.acount > 0 && this.acount <= TIME_COUNT1) {
                   this.acount--;
                   this.show = false;
-                } else {
+                }else {
                   // this.$router.push({path:'/index'})
                   // location.href = 'http://ems.jujinkeji.net/mobile/Index'
                   window.location.assign('http://ems.jujinkeji.net/mobile/Index')
@@ -446,13 +446,11 @@
               //   })
               // }).then(({ data }) => {
               //   if (data && data.code === 0) {
-
               //     location.href = 'http://ems.jujinkeji.net/mobile/Index'
               //   } else {
               //     alert(data.msg)
               //   }
               // })
-
             }
             //location.href = "${returnUrl}";
           }
@@ -1218,7 +1216,9 @@
     text-decoration: none;}
   .emil span{
     color: #333;
-    
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
     height: 10vw;
     width:40vw;
     text-align: right;
