@@ -98,6 +98,7 @@
         <div class="emil">
           <div>受理地址： &nbsp;</div>
           <span>{{dataForm.riskName}}</span>
+          <img src="../../img/dizhi.png" @click="getdz">
         </div>
         <div class="content-item" style="padding:0;">
           <div class="shoujian youji">收件地址
@@ -325,7 +326,6 @@
       },
       jump(e){
         var xdz = $(".xx input").val()
-        console.log(xdz)
         if(xdz==null){
           alert("请填写详细地址")
           return
@@ -422,12 +422,14 @@
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
               const TIME_COUNT1 = 3;
-              this.show= false;
+              
             if (!this.atimer) {
+              this.show = false;
               this.acount = TIME_COUNT1;
               this.atimer = setInterval(() => {
                 if (this.acount > 0 && this.acount <= TIME_COUNT1) {
                   this.acount--;
+                  this.show = false;
                 } else {
                   // this.$router.push({path:'/index'})
                   // location.href = 'http://ems.jujinkeji.net/mobile/Index'
@@ -700,7 +702,12 @@
         })
       },
 
-
+      getdz(){
+        if(this.dataForm.riskName==""){
+          this.getMyLocation()
+        }else{
+        }
+      },
       ///////////////////////////////////////////地理位置测试//////////////////////
       getMyLocation(){
         let that = this;
@@ -790,7 +797,6 @@
       this.getInsuredList()
       this.getHandleArea()
       this.getPostInfo()
-
       this.getMyLocation()
     }
   }
@@ -1214,10 +1220,16 @@
     text-decoration: none;}
   .emil span{
     color: #333;
-    margin-right: 4vw;
+    
     height: 10vw;
+    width:40vw;
+    text-align: right;
     line-height: 10vw;
     padding-left: 6vw;
     font-size: 4vw;
+  }
+  .emil img{
+    width:5vw;
+    margin-right: 4vw;
   }
 </style>
