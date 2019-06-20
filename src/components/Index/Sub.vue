@@ -1,4 +1,4 @@
-<template>
+﻿<template>
 <div>
     <div class="zf" v-show="!show">
       <img src="../../img/dui.png">
@@ -269,7 +269,6 @@
             }else{
               $(".uid").css("border","1px solid #dadada")
             }
-
       },
       changePhone(e){
         var a = this.dataForm.phone
@@ -421,8 +420,8 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              updatePayStatus();
               const TIME_COUNT1 = 3;
-              
             if (!this.atimer) {
               this.show = false;
               this.acount = TIME_COUNT1;
@@ -439,7 +438,6 @@
                 }
               }, 1000)
             }
-
               // this.$http({
               //   url: this.$http.adornUrl('/mobile/order/mail'),
               //   method: 'post',
