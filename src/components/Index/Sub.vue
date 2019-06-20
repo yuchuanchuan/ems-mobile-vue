@@ -894,7 +894,7 @@
     color:#fff;
     border-radius: 5px;
     box-shadow: 0;
-    background:#dadada;
+    background:#cdcdcd;
     border:1px solid #dadada;
     font-size:4vw;
     margin-left: 8vw;
