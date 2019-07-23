@@ -420,7 +420,7 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-              updatePayStatus();
+              // updatePayStatus();
               const TIME_COUNT1 = 3;
             if (!this.atimer) {
               this.show = false;
