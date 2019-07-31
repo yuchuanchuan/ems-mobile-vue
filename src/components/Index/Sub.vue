@@ -1,4 +1,4 @@
-<template>
+﻿<template>
 <div>
     <div class="zf" v-show="!show">
       <img src="../../img/dui.png">
@@ -269,7 +269,6 @@
             }else{
               $(".uid").css("border","1px solid #dadada")
             }
-
       },
       changePhone(e){
         var a = this.dataForm.phone
@@ -421,8 +420,8 @@
           },
           function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              // updatePayStatus();
               const TIME_COUNT1 = 3;
-              
             if (!this.atimer) {
               this.show = false;
               this.acount = TIME_COUNT1;
@@ -430,7 +429,7 @@
                 if (this.acount > 0 && this.acount <= TIME_COUNT1) {
                   this.acount--;
                   this.show = false;
-                } else {
+                }else {
                   // this.$router.push({path:'/index'})
                   // location.href = 'http://ems.jujinkeji.net/mobile/Index'
                   window.location.assign('http://ems.jujinkeji.net/mobile/Index')
@@ -439,7 +438,6 @@
                 }
               }, 1000)
             }
-
               // this.$http({
               //   url: this.$http.adornUrl('/mobile/order/mail'),
               //   method: 'post',
@@ -448,13 +446,11 @@
               //   })
               // }).then(({ data }) => {
               //   if (data && data.code === 0) {
-
               //     location.href = 'http://ems.jujinkeji.net/mobile/Index'
               //   } else {
               //     alert(data.msg)
               //   }
               // })
-
             }
             //location.href = "${returnUrl}";
           }
@@ -896,7 +892,7 @@
     color:#fff;
     border-radius: 5px;
     box-shadow: 0;
-    background:#dadada;
+    background:#cdcdcd;
     border:1px solid #dadada;
     font-size:4vw;
     margin-left: 8vw;
@@ -1220,7 +1216,9 @@
     text-decoration: none;}
   .emil span{
     color: #333;
-    
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
     height: 10vw;
     width:40vw;
     text-align: right;
